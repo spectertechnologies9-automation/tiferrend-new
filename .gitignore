@@ -1,0 +1,9 @@
+node_modules/
+dist/
+# Generated from src/data by scripts/build-pages.mjs (edit the data, not these files)
+/index.html
+/404.html
+/work/
+/about/
+/contact/
+.claude/settings.local.json
