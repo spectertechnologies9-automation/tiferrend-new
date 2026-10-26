@@ -6,6 +6,7 @@
 //   poster: 'media/video/testimonial-brand.jpg',      // thumbnail, loads first
 //   captions: 'media/video/testimonial-brand.vtt',    // WebVTT, required for accessibility
 //   quote: 'One short line shown under the thumbnail (optional)',
+//   portrait: true,                                   // only for vertical footage: shown letterboxed in the 16:9 frame
 // }
 //
 // The quotes on the current site are unconfirmed (one contradicts the My Mithila case study), so none are used.
@@ -23,6 +24,7 @@ export const sampleTestimonials = [
     poster: 'media/video/bts-poster.jpg',
     captions: 'media/video/sample-01.vtt',
     sample: true,
+    portrait: true, // 720 × 1266
   },
   {
     name: 'Client film slot 02',
@@ -32,5 +34,6 @@ export const sampleTestimonials = [
     poster: 'media/video/hero-poster.jpg',
     captions: 'media/video/sample-02.vtt',
     sample: true,
+    portrait: true, // 540 × 950
   },
 ];

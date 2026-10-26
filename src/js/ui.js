@@ -28,6 +28,8 @@ export function sheets() {
   };
   $$('dialog.sheet').forEach((d) => {
     d.addEventListener('cancel', (e) => { e.preventDefault(); close(d); });
+    // backdrop-filter can't blur 3D-transformed layers (the hero wordmark), so the page marks itself
+    d.addEventListener('close', () => document.body.classList.remove(`${d.id}-open`));
     d.addEventListener('click', (e) => {
       if (e.target === d || e.target.closest('[data-close]')) close(d);
       if (e.target.closest('a[href]')) close(d); // navigating closes the sheet
@@ -40,6 +42,7 @@ export function sheets() {
     if (!d) return;
     $$('dialog.sheet[open]').forEach((o) => o !== d && o.close());
     d.showModal();
+    document.body.classList.add(`${d.id}-open`);
     sound.play('open');
   });
 }
@@ -94,23 +97,46 @@ export function soundToggle() {
 
 /* ---------------------------------------------------------------- reveals */
 export function reveals() {
-  const els = $$('[data-split], [data-rv], [data-ftr-mark]');
+  const els = $$('[data-split], [data-rv], [data-ftr-mark], [data-flow]');
   if (env.reduced) return;
   $$('[data-split]').forEach((el) => {
-    if (el.children.length) return; // only plain-text headings are split
-    const words = el.textContent.trim().split(/\s+/);
-    el.innerHTML = words.map((w, i) => `<span class="w"><span style="--wi:${i}">${w}</span></span>`).join(' ');
+    const marks = ['EM', 'STRONG', 'U'];
+    if ([...el.children].some((c) => !marks.includes(c.tagName))) return; // plain text plus emphasis only
+    // words keep their emphasis (italic / bold / underline); emphasised words rise from the other side
+    const words = [];
+    el.childNodes.forEach((n) => {
+      const tag = n.nodeType === 1 ? n.tagName.toLowerCase() : '';
+      n.textContent.split(/\s+/).forEach((w, k) => {
+        if (k) words.push(' ');
+        if (w) words.push({ w, tag });
+      });
+    });
+    let i = 0;
+    el.innerHTML = words
+      .map((t) => (t === ' ' ? ' ' : `<span class="w${t.tag ? ' w--i' : ''}"><span style="--wi:${i++}">${t.tag ? `<${t.tag}>${t.w}</${t.tag}>` : t.w}</span></span>`))
+      .join('').replace(/\s+/g, ' ').trim();
     el.classList.add('is-split');
   });
+  const pending = new Set(els);
+  const show = (el) => { el.classList.add('is-in'); io.unobserve(el); pending.delete(el); };
   const io = new IntersectionObserver(
     (entries) => entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      e.target.classList.add('is-in');
-      io.unobserve(e.target);
+      if (e.isIntersecting || e.boundingClientRect.top < 0) show(e.target);
     }),
     { rootMargin: '0px 0px -8% 0px' }
   );
   els.forEach((el) => io.observe(el));
+  // An observer only reports state changes, so a jump from "below the screen" straight to "above it"
+  // (a fast fling, an anchor link) reports nothing. Catch those on scroll, once per frame, until done.
+  let raf = 0;
+  const sweep = () => {
+    raf = 0;
+    const limit = innerHeight * 0.92;
+    pending.forEach((el) => { if (el.getBoundingClientRect().top < limit) show(el); });
+    if (!pending.size) removeEventListener('scroll', onScroll);
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(sweep); };
+  addEventListener('scroll', onScroll, { passive: true });
 }
 
 /* ---------------------------------------------------------------- decorative autoplay video: in view only, with pause control */
@@ -176,6 +202,19 @@ export function aiLinks() {
   const q = encodeURIComponent(prompt);
   links.forEach((a) => {
     a.href = a.dataset.ai === 'claude' ? `https://claude.ai/new?q=${q}` : `https://chatgpt.com/?q=${q}`;
+  });
+}
+
+/* ---------------------------------------------------------------- magnetic buttons (technique after React Bits "Magnet", rewritten in vanilla JS) */
+export function magnets() {
+  if (env.reduced || !env.finePointer) return;
+  $$('.btn, .tst__play-i').forEach((el) => {
+    const strength = el.classList.contains('btn') ? 0.28 : 0.18;
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.transform = `translate(${(e.clientX - (r.left + r.width / 2)) * strength}px, ${(e.clientY - (r.top + r.height / 2)) * strength}px)`;
+    });
+    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
   });
 }
 

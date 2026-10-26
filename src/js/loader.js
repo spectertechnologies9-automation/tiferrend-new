@@ -10,17 +10,17 @@ const LAND = 1450; // logo-in animation lands at 1.4s
 export function runLoader() {
   const el = $('[data-loader]');
   const html = document.documentElement;
-  if (!el || !html.classList.contains('show-loader')) return Promise.resolve();
+  if (!el || !html.classList.contains('show-loader')) return Promise.resolve(false);
 
   return new Promise((resolve) => {
     let done = false;
-    const finish = () => {
+    const finish = (handedOff = false) => {
       if (done) return;
       done = true;
       try { sessionStorage.setItem(KEY, '1'); } catch {}
       html.classList.remove('show-loader');
       el.remove();
-      resolve();
+      resolve(handedOff);
     };
 
     const out = () => {
@@ -33,7 +33,7 @@ export function runLoader() {
         setTimeout(finish, 700);
         return;
       }
-      // Hand-off: move the loader logo onto the hero wordmark, invert it to the hero colours.
+      // Hand-off: move the loader logo onto the hero wordmark; the hero's 3D stack then grows out of it.
       el.classList.add('is-handoff'); // cancels the CSS entry animation before measuring
       const a = logo.getBoundingClientRect();
       const b = target.getBoundingClientRect();
@@ -41,15 +41,13 @@ export function runLoader() {
       const dx = b.left + b.width / 2 - (a.left + a.width / 2);
       const dy = b.top + b.height / 2 - (a.top + a.height / 2);
       target.style.opacity = '0';
-      logo.classList.add('wm3d-to-hero');
       const anim = logo.animate(
         [{ transform: 'none' }, { transform: `translate(${dx}px, ${dy}px) scale(${s})` }],
         { duration: 1000, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'forwards' }
       );
       const land = () => {
         target.style.opacity = '';
-        document.dispatchEvent(new CustomEvent('hero:landed'));
-        finish();
+        finish(true);
       };
       anim.onfinish = land;
       setTimeout(land, 1300);

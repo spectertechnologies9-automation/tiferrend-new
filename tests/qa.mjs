@@ -64,22 +64,26 @@ function watch(page) {
   return errs;
 }
 
+// Re-measures each step: pinned sections size themselves after GSAP loads and lengthen the page.
 async function walk(page, h) {
-  const total = await page.evaluate(() => document.documentElement.scrollHeight);
-  for (let y = 0; y < total; y += h * 0.7) { await page.evaluate((y) => window.scrollTo(0, y), y); await page.waitForTimeout(90); }
+  for (let y = 0; y < (await page.evaluate(() => document.documentElement.scrollHeight)); y += h * 0.7) {
+    await page.evaluate((y) => window.scrollTo(0, y), y);
+    await page.waitForTimeout(90);
+  }
   await page.waitForTimeout(500);
 }
 
 const layoutCheck = () => {
   const W = document.documentElement.clientWidth;
-  const skip = '.marq, .tst__list, .strip__track, .wk__filters, dialog, .loader, .hdr, .cursor, .skip, [aria-hidden="true"], .sr-only';
+  const skip = '.marq, .tst__list, .strip__track, .hz__track, .wk__filters, dialog, .loader, .hdr, .cursor, .skip, [aria-hidden="true"], .sr-only';
   // An element only counts if no ancestor clips it (overflow hidden/clip) within the viewport.
+  // Clipped if any ancestor that clips overflow lies inside the viewport (e.g. a pinned stage).
   const clipped = (el) => {
     for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
       const o = getComputedStyle(a);
       if (/(hidden|clip)/.test(o.overflowX + o.overflow)) {
         const r = a.getBoundingClientRect();
-        return r.left >= -1 && r.right <= W + 1;
+        if (r.left >= -1 && r.right <= W + 1) return true;
       }
     }
     return false;
@@ -90,14 +94,16 @@ const layoutCheck = () => {
     if (!r.width || !r.height) return false;
     return (r.right > W + 1 || r.left < -1) && !clipped(el);
   }).map((el) => `${el.tagName.toLowerCase()}.${el.className}`.slice(0, 60));
-  const hidden = [...document.querySelectorAll('[data-rv], [data-split].is-split')].filter((el) => el.getClientRects().length && !el.classList.contains('is-in')).length;
+  const hiddenEls = [...document.querySelectorAll('[data-rv], [data-split].is-split')].filter((el) => el.getClientRects().length && !el.classList.contains('is-in'));
+  const hidden = hiddenEls.length;
+  const hiddenWhat = hiddenEls.slice(0, 3).map((el) => `${el.textContent.trim().slice(0, 24)}@${Math.round(el.getBoundingClientRect().top + scrollY)}/${document.documentElement.scrollHeight}`);
   const badImgs = [...document.querySelectorAll('img')].filter((i) => i.complete && i.naturalWidth === 0 && i.getAttribute('src')).map((i) => i.src).slice(0, 3);
   const scrollX = document.documentElement.scrollWidth > window.innerWidth + 1;
   const tinyTargets = [...document.querySelectorAll('main a, main button, header a, header button, footer a')].filter((el) => {
     const r = el.getBoundingClientRect();
     return r.width && r.height && r.height < 32 && getComputedStyle(el).display !== 'inline';
   }).length;
-  return { over: [...new Set(over)].slice(0, 5), hidden, badImgs, scrollX, tinyTargets };
+  return { over: [...new Set(over)].slice(0, 5), hidden, hiddenWhat, badImgs, scrollX, tinyTargets };
 };
 
 for (const engine of engines) {
@@ -132,8 +138,8 @@ for (const engine of engines) {
     const gone = await page.evaluate(() => !document.querySelector('[data-loader]') && !document.documentElement.classList.contains('show-loader'));
     const mark = await page.evaluate(() => getComputedStyle(document.querySelector('[data-hero-mark]')).opacity);
     const vid = await page.evaluate(() => { const v = document.querySelector('[data-hero-video]'); return { src: v.currentSrc.split('/').pop(), paused: v.paused, t: v.currentTime }; });
-    ok(`[${engine} ${w}] loader shows on first visit, hands off within 3.6s`, shown && gone && mark === '1', JSON.stringify({ shown, gone, mark }));
-    ok(`[${engine} ${w}] hero film plays (right source)`, !vid.paused && vid.t > 0 && (w < 768 ? /hero-(540|720)/.test(vid.src) : /hero-wide/.test(vid.src)), JSON.stringify(vid));
+    ok(`[${engine} ${w}] loader shows on first visit, hands off within 3.6s`, shown && gone && parseFloat(mark) > 0.95, JSON.stringify({ shown, gone, mark }));
+    ok(`[${engine} ${w}] hero film plays (right source)`, !vid.paused && vid.t > 0 && (w < 768 ? /cosmos-tall/.test(vid.src) : /cosmos-720/.test(vid.src)), JSON.stringify(vid));
     await page.reload();
     const skipped = await page.evaluate(() => !document.documentElement.classList.contains('show-loader'));
     ok(`[${engine} ${w}] loader skipped on repeat visit`, skipped);
@@ -170,6 +176,7 @@ for (const engine of engines) {
     ok(`[${engine} 390] first tap previews a service (no navigation)`, stayed && active, JSON.stringify({ stayed, active, url: page.url() }));
     await page.locator('.svc__item').nth(2).locator('.svc__go').click();
     await page.waitForURL(/service=film/);
+    await page.waitForSelector('[data-filter="film"][aria-pressed="true"]', { timeout: 5000 }).catch(() => {});
     const pressed = await page.getAttribute('[data-filter="film"]', 'aria-pressed');
     ok(`[${engine} 390] service opens filtered Work`, pressed === 'true');
     await ctx.close();
@@ -236,8 +243,12 @@ for (const engine of engines) {
     await page.fill('#f-name', 'Test Person');
     await page.fill('#f-email', 'test@example.com');
     await page.fill('#f-msg', 'We need a new identity for a tea brand.');
+    // Capture the mailto hand-off instead of letting the test browser try to open a mail client.
+    await page.evaluate(() => { window.__mailto = ''; window.__openMail = (u) => { window.__mailto = u; }; });
     await page.click('[data-submit]');
     await page.waitForTimeout(400);
+    const mailto = await page.evaluate(() => window.__mailto);
+    ok(`[${engine} 1440] mailto hand-off carries the message`, mailto.startsWith('mailto:hello@tifferend.com') && decodeURIComponent(mailto).includes('tea brand'), mailto.slice(0, 60));
     const msg = await page.evaluate(() => document.querySelector('[data-form-status]').textContent);
     ok(`[${engine} 1440] valid submit (no endpoint) hands off to email app and says so honestly`, /isn’t sent until you press send/.test(msg), msg.slice(0, 90));
     // Keyboard: skip link first

@@ -1,89 +1,89 @@
-PASS  [chromium 320] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 320] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 320] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 320] no console / network errors
-PASS  [chromium 360] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 360] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 360] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 360] no console / network errors
-PASS  [chromium 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 375] no console / network errors
-PASS  [chromium 390] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 390] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 390] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 390] no console / network errors
-PASS  [chromium 414] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 414] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 414] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 414] no console / network errors
-PASS  [chromium 430] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 430] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 430] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 430] no console / network errors
-PASS  [chromium 768] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 768] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 768] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 768] no console / network errors
-PASS  [chromium 1024] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1024] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1024] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 1024] no console / network errors
-PASS  [chromium 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 1440] no console / network errors
-PASS  [chromium 1920] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [chromium 1920] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [chromium 1920] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 1920] no console / network errors
 PASS  [chromium 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [chromium 390] hero film plays (right source)  — {"src":"hero-540.mp4","paused":false,"t":3.573251}
+PASS  [chromium 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.729118}
 PASS  [chromium 390] loader skipped on repeat visit
 PASS  [chromium 390] loader run has no errors
 PASS  [chromium 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [chromium 1440] hero film plays (right source)  — {"src":"hero-wide.mp4","paused":false,"t":3.553568}
+PASS  [chromium 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.425202}
 PASS  [chromium 1440] loader skipped on repeat visit
 PASS  [chromium 1440] loader run has no errors
 PASS  [chromium 390] menu opens and closes with Esc
@@ -99,6 +99,7 @@ PASS  [chromium 1440] selected-work tile opens its project page
 PASS  [chromium 1440] next-project link works
 PASS  [chromium 1440] testimonial plays on click, previous pauses, captions attached  — [{"paused":true,"tracks":1},{"paused":false,"tracks":1}]
 PASS  [chromium 1440] empty submit shows error summary and flags fields  — {"summary":true,"invalid":3,"focus":true}
+PASS  [chromium 1440] mailto hand-off carries the message  — mailto:hello@tifferend.com?subject=Project%20enquiry%20%E2%8
 PASS  [chromium 1440] valid submit (no endpoint) hands off to email app and says so honestly  — Your email app should now be open with the message ready. It isn’t sent until you press se
 PASS  [chromium 1440] skip link is first tab stop
 PASS  [chromium 1440] AI summary link points at claude.ai with the public URL only  — https://claude.ai/new?q=Visit http://localhost:4180/tifferend/ — the website of 
@@ -106,28 +107,28 @@ PASS  [chromium 1440] interactions ran without errors
 PASS  [chromium 390] reduced motion: no loader, no split/hidden text, poster instead of film, static logos  — {"loader":"none","split":0,"video":null,"marquee":"none"}
 PASS  [chromium] deep link to a project loads directly
 PASS  [chromium] 404 page renders styled under the sub-path  — styled=true
-PASS  [firefox 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [firefox 375] no console / network errors
-PASS  [firefox 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [firefox 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [firefox 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [firefox 1440] no console / network errors
 PASS  [firefox 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [firefox 390] hero film plays (right source)  — {"src":"hero-540.mp4","paused":false,"t":3.599999}
+PASS  [firefox 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.794151}
 PASS  [firefox 390] loader skipped on repeat visit
 PASS  [firefox 390] loader run has no errors
 PASS  [firefox 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [firefox 1440] hero film plays (right source)  — {"src":"hero-wide.mp4","paused":false,"t":3.554103}
+PASS  [firefox 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.576583}
 PASS  [firefox 1440] loader skipped on repeat visit
 PASS  [firefox 1440] loader run has no errors
 PASS  [firefox 390] menu opens and closes with Esc
@@ -143,6 +144,7 @@ PASS  [firefox 1440] selected-work tile opens its project page
 PASS  [firefox 1440] next-project link works
 PASS  [firefox 1440] testimonial plays on click, previous pauses, captions attached  — [{"paused":true,"tracks":1},{"paused":false,"tracks":1}]
 PASS  [firefox 1440] empty submit shows error summary and flags fields  — {"summary":true,"invalid":3,"focus":true}
+PASS  [firefox 1440] mailto hand-off carries the message  — mailto:hello@tifferend.com?subject=Project%20enquiry%20%E2%8
 PASS  [firefox 1440] valid submit (no endpoint) hands off to email app and says so honestly  — Your email app should now be open with the message ready. It isn’t sent until you press se
 PASS  [firefox 1440] skip link is first tab stop
 PASS  [firefox 1440] AI summary link points at claude.ai with the public URL only  — https://claude.ai/new?q=Visit http://localhost:4180/tifferend/ — the website of 
@@ -150,28 +152,28 @@ PASS  [firefox 1440] interactions ran without errors
 PASS  [firefox 390] reduced motion: no loader, no split/hidden text, poster instead of film, static logos  — {"loader":"none","split":0,"video":null,"marquee":"none"}
 PASS  [firefox] deep link to a project loads directly
 PASS  [firefox] 404 page renders styled under the sub-path  — styled=true
-PASS  [webkit 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 375] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [webkit 375] no console / network errors
-PASS  [webkit 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
-PASS  [webkit 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] / status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /work/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /work/?service=film status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /work/my-mithila/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /work/maison-luxe/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /about/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
+PASS  [webkit 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [webkit 1440] no console / network errors
 PASS  [webkit 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [webkit 390] hero film plays (right source)  — {"src":"hero-540.mp4","paused":false,"t":2.8896005}
+PASS  [webkit 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":2.8141001}
 PASS  [webkit 390] loader skipped on repeat visit
 PASS  [webkit 390] loader run has no errors
 PASS  [webkit 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [webkit 1440] hero film plays (right source)  — {"src":"hero-wide.mp4","paused":false,"t":2.8685541}
+PASS  [webkit 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":2.6049558}
 PASS  [webkit 1440] loader skipped on repeat visit
 PASS  [webkit 1440] loader run has no errors
 PASS  [webkit 390] menu opens and closes with Esc
@@ -187,6 +189,7 @@ PASS  [webkit 1440] selected-work tile opens its project page
 PASS  [webkit 1440] next-project link works
 PASS  [webkit 1440] testimonial plays on click, previous pauses, captions attached  — [{"paused":true,"tracks":1},{"paused":false,"tracks":1}]
 PASS  [webkit 1440] empty submit shows error summary and flags fields  — {"summary":true,"invalid":3,"focus":true}
+PASS  [webkit 1440] mailto hand-off carries the message  — mailto:hello@tifferend.com?subject=Project%20enquiry%20%E2%8
 PASS  [webkit 1440] valid submit (no endpoint) hands off to email app and says so honestly  — Your email app should now be open with the message ready. It isn’t sent until you press se
 PASS  [webkit 1440] skip link is the first focusable element
 PASS  [webkit 1440] AI summary link points at claude.ai with the public URL only  — https://claude.ai/new?q=Visit http://localhost:4180/tifferend/ — the website of 
@@ -195,4 +198,4 @@ PASS  [webkit 390] reduced motion: no loader, no split/hidden text, poster inste
 PASS  [webkit] deep link to a project loads directly
 PASS  [webkit] 404 page renders styled under the sub-path  — styled=true
 
-196 passed, 0 failed
+199 passed, 0 failed

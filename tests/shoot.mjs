@@ -3,7 +3,7 @@
 import { chromium, firefox, webkit } from 'playwright';
 
 const [path = '', width = '1440', height = '900', out = 'shot', engine = 'chromium'] = process.argv.slice(2);
-const browser = await { chromium, firefox, webkit }[engine].launch();
+const browser = await { chromium, firefox, webkit }[engine].launch(engine === 'chromium' ? { channel: 'chrome' } : {});
 const mobile = +width < 768;
 const ctx = await browser.newContext({ viewport: { width: +width, height: +height }, deviceScaleFactor: 1, hasTouch: mobile, isMobile: mobile && engine !== 'firefox' });
 await ctx.addInitScript(() => sessionStorage.setItem('tifferend-loaded', '1'));

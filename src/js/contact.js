@@ -60,7 +60,7 @@ export function init() {
         .filter((x) => x !== undefined && x !== '')
         .join('\n');
       const href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(`Project enquiry — ${data.name}`)}&body=${encodeURIComponent(body)}`;
-      window.location.href = href;
+      (window.__openMail || ((u) => { window.location.href = u; }))(href); // overridable in tests
       status.classList.add('is-ok');
       status.innerHTML = `Your email app should now be open with the message ready. <strong>It isn’t sent until you press send there.</strong> No email app? Write to <a href="mailto:${form.dataset.email}">${form.dataset.email}</a>.`;
       return;

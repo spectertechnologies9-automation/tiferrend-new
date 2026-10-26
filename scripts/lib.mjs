@@ -43,6 +43,7 @@ export function img(src, { alt = '', sizes = '100vw', cls = '', eager = false, s
   return `<img${c} src="{{root}}${mid.file}" srcset="${set}" sizes="${sizes}" alt="${esc(alt)}" ${load} decoding="async"${st} ${attrs}>`;
 }
 
-export const lbl = (t) => `<p class="lbl"><span class="lbl__dash" aria-hidden="true"></span>${esc(t)}</p>`;
+// The brief's small category label (PDF §06): sentence case in the text face, paired with a large headline.
+export const lbl = (t) => `<p class="lbl">${esc(t)}</p>`;
 
 export const arrow = '<svg class="ico-arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';

@@ -7,3 +7,7 @@ dist/
 /about/
 /contact/
 .claude/settings.local.json
+*.zip
+.agents/
+.claude/skills/
+dist-v/

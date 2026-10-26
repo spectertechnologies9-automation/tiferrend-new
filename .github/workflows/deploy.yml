@@ -36,7 +36,7 @@ jobs:
           test -f dist/index.html
           test -f dist/404.html
           test -f dist/work/my-mithila/index.html
-          test -f dist/media/video/hero-wide.mp4
+          test -f dist/media/video/cosmos-720.mp4
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
