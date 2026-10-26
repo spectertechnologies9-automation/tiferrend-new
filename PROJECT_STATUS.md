@@ -1,8 +1,34 @@
 # PROJECT_STATUS — Tifferend website
 
-_Last updated: 25 Oct 2026 (session 7: client feedback — hierarchy, typography, testimonials, flow). Build in `Desktop/tifferend final/`._
+_Last updated: 26 Oct 2026 (deployment to GitHub Pages). Build in `Desktop/tifferend final/`._
 
-## Session 7: client feedback pass (read this first)
+## Deployment — live on GitHub Pages (26 Oct 2026, read this first)
+
+- **Live:** https://spectertechnologies9-automation.github.io/tiferrend-new/ (URL taken from GitHub's `github-pages` deployment record, state `success`).
+- **Repository:** https://github.com/spectertechnologies9-automation/tiferrend-new, branch `main`.
+
+**What was done**
+1. **Inspected.** The local repo had one commit and no remote. The target repo had one commit (`2a66ab4`, a `read me` file) and showed "Site not found" on Pages. The existing `.github/workflows/deploy.yml` (Actions → Pages) was kept.
+2. **Fixed one deploy blocker:** the workflow's build check required `dist/media/video/hero-wide.mp4`, which the redesign deleted, so it now checks `cosmos-720.mp4`. No other config changes: `base: './'` already serves the sub-path, and CI sets `SITE_BASE` from `configure-pages`, which pins the 404 page's `<base>` to `/tiferrend-new/`.
+3. **Checked before committing:** no `.env`, keys or tokens; generated HTML, `dist/` and `node_modules/` are git-ignored; largest file 5.9 MB; `npm ls` consistent with the lockfile; local build with `SITE_BASE=/tiferrend-new/` clean.
+4. **Committed** `7d0d0b2` (all session 2–7 work, 57 files) with the repo-local author set to `spectertechnologies9-automation` (the global git name was a placeholder).
+5. **Merged** the remote's initial commit with `--allow-unrelated-histories` (merge `7a4016f`; the `read me` file is kept). Pushed as a fast-forward `2a66ab4..7a4016f`: no force-push, no branch deleted.
+6. **GitHub Actions run 40283650478 succeeded.** Build: checkout, Node 20, configure-pages, `npm ci`, `npm run build`, output check and artifact upload. Deploy: `deploy-pages`.
+
+**Verified on the live site** (`tests/live.mjs`, Chrome, desktop 1440 and mobile 390)
+- HTTP 200 for home, work, my-mithila, about, contact and a video file; an unknown path returns 404 with the styled 404 page.
+- The browser loads CSS and fonts (Lora, Inter, Space Mono).
+- Hero: 7 wordmark glyphs animating, star layer visible.
+- Work lists 6 projects; clicking My Mithila opens `/work/my-mithila/`, and a hard refresh of that nested route still loads.
+- No failed requests other than the deliberate 404 test.
+- The project heading's liquid reveal settles crisp within about 2 s (checked at 4 s).
+
+**Outstanding (not deployment blockers)**
+- The client fonts (PP Editorial Old, Suisse BP Intl) are still unlicensed; the live site uses the Lora and Inter fallbacks.
+- Testimonials are still sample slots.
+- If a custom domain is added later, add `public/CNAME` and set it in Settings → Pages. CI then switches `SITE_BASE` to `/` automatically.
+
+## Session 7: client feedback pass
 
 **References inspected** (contact sheets, plus fine frames around transitions):
 - **Brief PDF** (in the WhatsApp recording): its section reference map assigns Mensch to the hero, Info and client logos, Kingdom & Sparrow to the 2×2 work tiles, and Bold & Beyond to the services hover backgrounds.

@@ -57,5 +57,10 @@ Durable rules for anyone (human or agent) working here.
 - React Bits is a React library; this site is vanilla, so techniques are ported (e.g. the magnetic buttons in `ui.js`), never installed.
 - `tests/frames.mjs` captures viewport frames at story beats (use it for pinned scenes; full-page shots can't show them).
 
+## Deployment
+- GitHub Pages via Actions (`.github/workflows/deploy.yml`) from `main` of https://github.com/spectertechnologies9-automation/tiferrend-new. Live at https://spectertechnologies9-automation.github.io/tiferrend-new/. CI derives `SITE_BASE` from `configure-pages`.
+- The workflow's "Check build output" step names real files: update it when renaming or removing media, or every deploy fails.
+- Never force-push `main`; reconcile remote work with a merge.
+
 ## QA before declaring done
 `npm run build` (locally on Windows/Git Bash: `MSYS_NO_PATHCONV=1 SITE_BASE=/tifferend/ npm run build` to also test the 404), then `npm test`. It serves `dist/` under `/tifferend/` and runs in Chrome (channel `chrome`, because bundled Chromium can't decode H.264), Firefox and WebKit. Record real results in `PROJECT_STATUS.md`. Stop any `vite preview` before building: Windows locks `dist/` media files.
