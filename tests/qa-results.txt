@@ -79,11 +79,11 @@ PASS  [chromium 1920] /about/ status 200, layout clean  — {"status":200,"over"
 PASS  [chromium 1920] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [chromium 1920] no console / network errors
 PASS  [chromium 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [chromium 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.634545}
+PASS  [chromium 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.706608}
 PASS  [chromium 390] loader skipped on repeat visit
 PASS  [chromium 390] loader run has no errors
 PASS  [chromium 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [chromium 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.557367}
+PASS  [chromium 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.483085}
 PASS  [chromium 1440] loader skipped on repeat visit
 PASS  [chromium 1440] loader run has no errors
 PASS  [chromium 390] menu opens and closes with Esc
@@ -124,11 +124,11 @@ PASS  [firefox 1440] /about/ status 200, layout clean  — {"status":200,"over":
 PASS  [firefox 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [firefox 1440] no console / network errors
 PASS  [firefox 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [firefox 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.727771}
+PASS  [firefox 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":3.617437}
 PASS  [firefox 390] loader skipped on repeat visit
 PASS  [firefox 390] loader run has no errors
 PASS  [firefox 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [firefox 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.536796}
+PASS  [firefox 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":3.583332}
 PASS  [firefox 1440] loader skipped on repeat visit
 PASS  [firefox 1440] loader run has no errors
 PASS  [firefox 390] menu opens and closes with Esc
@@ -169,11 +169,11 @@ PASS  [webkit 1440] /about/ status 200, layout clean  — {"status":200,"over":[
 PASS  [webkit 1440] /contact/ status 200, layout clean  — {"status":200,"over":[],"hidden":0,"hiddenWhat":[],"badImgs":[],"scrollX":false,"tinyTargets":1}
 PASS  [webkit 1440] no console / network errors
 PASS  [webkit 390] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [webkit 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":2.7940987}
+PASS  [webkit 390] hero film plays (right source)  — {"src":"cosmos-tall.mp4","paused":false,"t":2.8459806}
 PASS  [webkit 390] loader skipped on repeat visit
 PASS  [webkit 390] loader run has no errors
 PASS  [webkit 1440] loader shows on first visit, hands off within 3.6s  — {"shown":true,"gone":true,"mark":"1"}
-PASS  [webkit 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":2.5478918}
+PASS  [webkit 1440] hero film plays (right source)  — {"src":"cosmos-720.mp4","paused":false,"t":2.6042387}
 PASS  [webkit 1440] loader skipped on repeat visit
 PASS  [webkit 1440] loader run has no errors
 PASS  [webkit 390] menu opens and closes with Esc

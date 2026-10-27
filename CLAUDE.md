@@ -35,7 +35,11 @@ Durable rules for anyone (human or agent) working here.
   - Until then the stacks fall back to self-hosted Lora (display) and Inter (text).
   - Display type is set at regular weight (400) with italic, bold (700) and ember-underline emphasis. Never ship unlicensed font files.
   - Space Mono only inside the preserved loader.
-- Type rules: the scale at 1440 is xxl 89, xl 52, lg 34, statement 26, body 16–17, and section padding is `--sec` (72–136px). Keep imagery dominant; don't scale type back up.
+- Type and space (client: "more negative space, zoom out slightly", Oct 2026):
+  - Scale at 1440: xxl 75, xl 45, lg 29, statement 22, body 16–17.
+  - `--sec` 80–176px, `--gutter` 20–88px, content `--max` 1480px.
+  - Work tiles sit inside the page margins with a gap.
+  - Keep imagery dominant and body text at 16px or more; don't scale type back up.
   - No tracked uppercase monospace labels and no index numbers.
   - Fine rules only where a reference calls for them: service rows (Bold & Beyond) and Info panel rows (Mensch).
   - Square buttons; headlines held to two lines. The PDF §06 small label + large headline pair stays, set as a sentence-case ember label.

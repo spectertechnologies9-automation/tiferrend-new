@@ -1,8 +1,37 @@
 # PROJECT_STATUS — Tifferend website
 
-_Last updated: 27 Oct 2026 (session 8b: white theme on the existing site). Build in `Desktop/tifferend final/`._
+_Last updated: 27 Oct 2026 (session 8c: negative space and content scale). Build in `Desktop/tifferend final/`._
 
-## Session 8b: white theme, building on the existing site (read this first)
+## Session 8c: more negative space, content zoomed out slightly (read this first)
+
+Client: "increase negative space" and "zoom out the content slightly". The changes are measured and token-led, with no layout or identity changes. All in `src/styles/main.css`.
+
+**Space**
+- `--gutter` 16–56 → 20–88 px (wider side margins).
+- `--sec` 72–136 → 80–176 px (more air between sections).
+- More room under section heads (to 68 px) and between footer columns.
+- More vertical air on the work page.
+- A white gap now separates the project header band from the cover.
+
+**Scale (desktop @1440)**
+- Content `--max` 1680 → 1480 px.
+- Headlines step down about 13%: xxl 89 → 75, xl 52 → 45, lg 34 → 29, statement 26 → 22, intro statement 32 → 25.
+- Body text unchanged (16–17 px).
+
+**Sections**
+- Hero wordmark: 92 → 84 vw (max 1560).
+- Work tiles now sit inside the margins with a gap, instead of edge to edge.
+- Service names: 2.45 → 2.05 rem max, slightly shorter rows.
+- Studio strip frames: 70 → 60 vh (odd frames 58 → 50 vh).
+- Testimonial cards: 64 → 54 vw (max 840).
+- Project cover: contained within the margins.
+
+**Verified**
+- Desktop (1440) and mobile (390) audits: hierarchy holds, body stays readable, mobile keeps 20 px gutters.
+- The homepage is slightly *shorter* overall despite the extra spacing, because the content itself is more compact.
+- `npm test`: **199 passed, 0 failed** (Chrome, Firefox, WebKit).
+
+## Session 8b: white theme, building on the existing site
 
 The client confirmed: **predominantly white backgrounds, black type, tasteful orange accents**, evolving the current site rather than rebuilding it. This settles the colour question left open in 8a.
 
