@@ -62,7 +62,10 @@ function servicesBlock() {
   };
   items.forEach((it, i) => {
     const link = $('.svc__link', it);
-    link.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') set(i); });
+    // Hover previews only in the desktop layout, where a row's details sit beside it. Below 900px the
+    // details expand inline, so hover would reflow the list under the pointer and flip rows back and forth.
+    const wide = matchMedia('(min-width: 900px)');
+    link.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && wide.matches) set(i); });
     link.addEventListener('focus', () => link.matches(':focus-visible') && set(i)); // keyboard only; taps are handled below
     // Touch: first tap previews (image + route to the work), second tap opens the filtered Work page.
     link.addEventListener('click', (e) => {

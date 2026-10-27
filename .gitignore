@@ -11,3 +11,6 @@ dist/
 .agents/
 .claude/skills/
 dist-v/
+# Generated from src/data/site.js by scripts/build-pages.mjs
+/public/sitemap.xml
+/public/robots.txt

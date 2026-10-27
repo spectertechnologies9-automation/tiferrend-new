@@ -291,7 +291,8 @@ for (const engine of engines) {
     ok(`[${engine}] deep link to a project loads directly`, res.status() === 200 && (await page.title()).includes('The Grand'));
     const nf = await page.goto(`${ORIGIN}${BASE}work/nope/deeper/`);
     await page.waitForTimeout(300);
-    const styled = await page.evaluate(() => getComputedStyle(document.body).backgroundColor === 'rgb(0, 0, 0)' && !!document.querySelector('.nf'));
+    // styled = the stylesheet loaded under the sub-path: the design tokens resolve and the body uses our font stack
+    const styled = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() !== '' && /Suisse|Inter/.test(getComputedStyle(document.body).fontFamily) && !!document.querySelector('.nf'));
     ok(`[${engine}] 404 page renders styled under the sub-path`, nf.status() === 404 && styled, `styled=${styled}`);
     await ctx.close();
   }

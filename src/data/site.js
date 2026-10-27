@@ -5,9 +5,9 @@ export const site = {
   title: 'Tifferend — Creative Branding Studio',
   description:
     'Tifferend builds brands through strategy, storytelling, and design. A full-service branding, marketing, and creative studio.',
-  // Absolute production URL, e.g. 'https://tifferend.com' or 'https://user.github.io/tifferend'.
-  // Leave empty until the domain is decided: og:url / og:image are only emitted when set.
-  url: '',
+  // Absolute production URL, no trailing slash. Canonical links, og:url / og:image, sitemap.xml and
+  // robots.txt derive from it. Change it here if a custom domain is added (and add public/CNAME).
+  url: 'https://spectertechnologies9-automation.github.io/tiferrend-new',
   email: 'hello@tifferend.com',
   careersUrl: 'https://forms.gle/hJoBoTJDMgsCnCJu9',
   tagline: 'Your brand’s creative partner.',

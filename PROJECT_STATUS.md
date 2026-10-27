@@ -1,8 +1,126 @@
 # PROJECT_STATUS — Tifferend website
 
-_Last updated: 26 Oct 2026 (deployment to GitHub Pages). Build in `Desktop/tifferend final/`._
+_Last updated: 27 Oct 2026 (session 8b: white theme on the existing site). Build in `Desktop/tifferend final/`._
 
-## Deployment — live on GitHub Pages (26 Oct 2026, read this first)
+## Session 8b: white theme, building on the existing site (read this first)
+
+The client confirmed: **predominantly white backgrounds, black type, tasteful orange accents**, evolving the current site rather than rebuilding it. This settles the colour question left open in 8a.
+
+**How it was done (token-level, reversible)**
+- **Light tokens** in `:root` (`main.css`):
+
+  | Token | Value |
+  |---|---|
+  | `--bg` | `#fff` |
+  | `--fg` | `#0b0b0b` |
+  | `--text` | `#1c1c1c` |
+  | `--soft` | `#4a4a4a` |
+  | `--mute` | `#6b6b6b` |
+  | `--line` | `#e4e2de` |
+  | `--surface` | `#f2f1ee` |
+
+  - The brand orange `#FF7F4D` is unchanged for fills and large marks.
+  - New `--ember-text #c24d1c` for small orange text and focus rings on white (AA).
+  - New `--on-accent` for black text on orange fills.
+- **Semantics split:** `--paper` (used as strong text) → `--fg`; `--ink` as a background → `--bg`; `--ink` as text on orange → `--on-accent`.
+- **Dark stages:** a `.dark` class re-declares the original palette. It's applied to the cinematic hero (starfield, 3D wordmark), the image-led services, the footer (black, as the client allowed), the loader (preserved) and the next-project panel. Everything else is white.
+- **Unchanged:** the header (white with `mix-blend-mode: difference`) already renders black on white and white on dark, so it needed nothing.
+- **Logos:** mono client logos render black on white and white inside `.dark`.
+- **Fixed for light:** the testimonial arrow buttons; the About process numerals (dark outline); and inverted fills (active filter chip, button hovers), which had become black on black.
+- `<meta name="color-scheme" content="light">` and `theme-color #ffffff`.
+
+**Bug found and fixed:** below 900px the service rows expand inline, and a mouse hover activated them, so moving the pointer down the list reflowed it under the cursor and flipped rows back and forth. It showed up as an intermittent mobile test failure. Hover preview is now desktop-layout only; narrow layouts use tap or click (`home.js`).
+
+**Kept as is (already meets the brief):**
+- The editorial typography, with PP Editorial Old and Suisse BP Intl slots (still unlicensed; Lora/Inter fallbacks render).
+- Bottom-left work labels, Bold & Beyond service rows, the Mellow logo reveal and the horizontal testimonials.
+- Client logos after the hero and Careers before the footer (8a); "Understand, Create, Amplify" removed (session 7).
+- The orange cursor streak, and the watery effect at the client's 2×.
+
+**Tests actually run**
+- `npm test`: **199 passed, 0 failed** (Chrome, Firefox, WebKit).
+  - An intermediate run failed 3 checks: the 404 test defined "styled" as "body is black". It now checks that the stylesheet tokens and font stack resolve.
+  - One run crashed on the services hover-reflow bug above, before the fix.
+- `tests/contrast.mjs` (new): small text on white measures 4.8 (labels), 5.33 (notes, meta), 8.9 (form labels), 17 (body) and 19.7 (headlines). Footer headings measure 7.7. The two readings of "1" are artefacts: the difference-blended header, and text over the services photo.
+- Visual audits (`tests/audit.mjs`) of home, work, about, contact and a project page at 1440, and home at 390.
+
+**Files changed:** `src/styles/main.css`, `scripts/shell.mjs`, `scripts/pages.mjs` (dark stage classes), `src/js/home.js`, `tests/qa.mjs`, `tests/contrast.mjs` (new), `CLAUDE.md` (colour rule).
+
+**Open for the client:**
+1. Licensed font files.
+2. Landscape showreel footage.
+3. Real testimonial films.
+4. Whether the footer should also go white. It's black now because the closing wordmark dances over the studio film, which needs a dark stage.
+
+**Not yet deployed** (the client is reviewing locally).
+
+## Session 8a: staged refinement, building on the existing site
+
+The client asked for small, reviewable changes on the existing site: no redesign, keep the Lovable UI (layout, colours, fonts) unless a specific requirement says otherwise.
+
+### Stage 1: audit (what was actually inspected)
+- **Approved Lovable site** (`tifferend-brand-journey.lovable.app`), captured live at 1440 and 390:
+  - Palette: dark (`#000` background, white text, orange accent).
+  - Fonts: Lora (headings, orange italic emphasis) and Space Mono (body).
+  - Order: Hero → **client logos + stats** → Philosophy → Work → "What founders say" → Services (3 cards) → "Know us better" (Understand / Create / Amplify) → Contact.
+- **Reference recordings** (inspected frame by frame in sessions 6–7; nothing new was supplied this round):
+  - AUGE (watery type, velocity-bent panels)
+  - Mellow Designs ×3 (fragment logo reveal, horizontal 16:9 testimonials, sitemap footer)
+  - Bold & Beyond, which the brief calls "Golden Beyond" (service rows, hover imagery)
+  - Kingdom & Sparrow (2×2 work tiles)
+  - Mensch, plus the brief PDF's section map, in the WhatsApp recording
+  - The client's editorial-quote screenshot (re-attached this round)
+- **New files searched for on this machine:**
+  - The Downloads images from 25–26 Oct are construction-materials product sheets, plus the quote screenshot.
+  - `IMG_4006.MP4` is a WhatsApp shopping-bot screen recording.
+  - **No new Tifferend photos, footage or font files were found**, so the portfolio is unchanged.
+- **Interrupted earlier attempt found in the tree:** an uncommitted `.gitignore` edit claimed `public/sitemap.xml` and `robots.txt` were generated, but no generator existed. It's now completed (see Stage 6). `tests/lovable-audit.mjs` from that attempt is kept as a tool.
+
+### Requirement map
+| Requirement | Status |
+|---|---|
+| Keep the Lovable UI (dark palette, layout, identity) | Kept. No recolouring and no layout rebuild. |
+| "Predominantly white backgrounds" | **Not applied: conflicts with the approved Lovable UI, which is dark.** Needs a client decision. |
+| Fonts: PP Editorial Old + Suisse BP Intl | Wired in (session 7); **files still unlicensed or not supplied**, so the Lora/Inter fallbacks render. |
+| Editorial quote (italics, inline images) | Already in place on the intro statement (session 7). |
+| Spacing / type proportions | Done in session 7; re-audited, no further change needed. |
+| Services (Bold & Beyond / "Golden Beyond") | Done in session 7, with all 6 services from `services.js`. |
+| Logo reveal (Mellow) | Done in session 7. |
+| Showreel hero | **Blocked: no landscape footage exists** (all real footage is portrait). The existing hero is kept. |
+| Client logos right after the hero | **Done this round** (matches the Lovable order). |
+| Careers right before the footer | **Done this round** (homepage; About already ended with it). |
+| "Understand, Create, Amplify" | Removed from the homepage in session 7; About keeps a concise "How we work." |
+| Lovable stats (50+, 200+, 8, 5) | Not used: unconfirmed metrics (content-integrity rule). |
+| Flowing / liquid effect | Kept at the 2× strength the client set in session 7; watery reveals settle crisp. Not stacked or extended. |
+| SEO / AEO | **Done this round** (Stage 6). |
+
+### Changes this round (small, reversible)
+1. **Client strip after the hero** (`clientsStrip()` in `pages.mjs`): the same marquee as the footer's, exported `clientRow()` from `shell.mjs`. The footer copy is hidden on the homepage, so the logos appear once.
+2. **Careers before the footer:** About's block became the shared `careersBlock()`, used last on the homepage and on About.
+3. **SEO / AEO:**
+   - `site.url` is set to the Pages URL.
+   - Canonical link per page, and a correct `og:url` (project pages wrongly emitted `/project`).
+   - New 1200×630 Tifferend share image (`media/brand/og-image.jpg`, built from the official white logo); it replaces the My Mithila wordmark that was used as Tifferend's share image.
+   - `og:site_name`, `twitter:image`, `noindex` on the 404 page and draft projects.
+   - JSON-LD: Organization (name, URL, logo, email, slogan, description, X profile, the six real services) on every page, WebSite on home, CreativeWork for confirmed projects only. No address, ratings, reviews or dates were invented.
+   - `sitemap.xml` and `robots.txt` are now generated from the site data by `build-pages.mjs` (indexable pages only: home, work, about, contact, My Mithila).
+
+**Files changed:** `src/data/site.js`, `scripts/build-pages.mjs`, `scripts/shell.mjs`, `scripts/pages.mjs`, `src/styles/main.css`, `public/media/brand/og-image.jpg` (new), `.gitignore` (generated SEO files ignored).
+
+### Tests actually run (27 Oct 2026)
+- `npm test` on a `/tifferend/` production build: **199 passed, 0 failed** (Chrome, Firefox, WebKit).
+- Generated output checked by hand: the sitemap lists 5 pages; canonical links are correct; draft projects and 404 are noindex; homepage JSON-LD has Organization and WebSite with the six services.
+- Visual audit of the new homepage order at 1440 (`tests/audit.mjs`): hero, clients, philosophy, work, services, studio, testimonials, enquiry, careers, footer.
+- Not yet deployed: commit and push to publish to Pages.
+
+### Client decisions / assets needed (next review)
+1. White vs the approved dark Lovable palette.
+2. Licensed PP Editorial Old and Suisse BP Intl `.woff2` files.
+3. Landscape footage for a showreel (or keep the current hero).
+4. Confirmed client testimonial films.
+5. Any new portfolio photographs: none were found on this machine.
+
+## Deployment — live on GitHub Pages (26 Oct 2026)
 
 - **Live:** https://spectertechnologies9-automation.github.io/tiferrend-new/ (URL taken from GitHub's `github-pages` deployment record, state `success`).
 - **Repository:** https://github.com/spectertechnologies9-automation/tiferrend-new, branch `main`.

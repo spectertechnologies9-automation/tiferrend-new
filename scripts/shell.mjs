@@ -54,9 +54,28 @@ const favicon =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#000"/><text x="31" y="47" font-family="Georgia,serif" font-weight="700" font-size="46" fill="#fff" text-anchor="middle">t</text><circle cx="48" cy="45" r="4" fill="#FF7F4D"/></svg>'
   );
 
+// Structured data (JSON-LD): only facts already published on the site, nothing inferred (no address,
+// ratings, reviews or founding date). The organisation everywhere; the site on the homepage; a project
+// as CreativeWork when it is confirmed work (drafts are noindex and get none).
+function structuredData(page, pageUrl, project) {
+  if (!site.url) return '';
+  const org = {
+    '@type': 'Organization', '@id': `${site.url}/#org`, name: site.name, url: `${site.url}/`,
+    logo: `${site.url}/media/brand/tifferend-logo.png`, email: site.email, slogan: site.brandLine,
+    description: site.description,
+    sameAs: site.socials.map((s) => s.href),
+    knowsAbout: services.map((s) => s.name),
+    makesOffer: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, description: s.line } })),
+  };
+  const graph = [org];
+  if (page === 'home') graph.push({ '@type': 'WebSite', '@id': `${site.url}/#site`, url: `${site.url}/`, name: site.name, publisher: { '@id': `${site.url}/#org` } });
+  if (project && !project.draft && pageUrl) graph.push({ '@type': 'CreativeWork', name: `${project.client} — ${project.category}`, url: pageUrl, description: project.summary, dateCreated: String(project.year), creator: { '@id': `${site.url}/#org` } });
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`;
+}
+
 function loader() {
   const pos = ['l1', 'l2', 'l3', 'l4', 'l5', 'l6'];
-  return `<div class="loader" data-loader aria-hidden="true">
+  return `<div class="loader dark" data-loader aria-hidden="true">
   <div class="loader__grain"></div>
   <div class="loader__words">${loaderWords.map((w, i) => `<span class="loader__word ${pos[i]}" style="--i:${i}"><span class="loader__dash"></span>${w}</span>`).join('')}</div>
   <div class="loader__logo" data-loader-logo>${wm3d('wm3d--loader')}</div>
@@ -127,7 +146,7 @@ function dialogs() {
 }
 
 // Client marks (Mensch presents them as a strip above the closing wordmark): real logos only.
-const clientRow = (decorative = false) => clients
+export const clientRow = (decorative = false) => clients
   .map((c) => `<li class="marq__item"><img class="logo logo--${c.tone}" src="{{root}}media/clients/${c.file}.webp" alt="${decorative ? '' : esc(c.name)}" width="${c.w}" height="120" loading="lazy" decoding="async"></li>`)
   .join('');
 
@@ -135,7 +154,7 @@ function footer() {
   const ai = site.aiSummaryLinks
     ? `<div class="ftr__ai" data-ai-wrap><p class="ftr__h">Summarise us with AI</p><div class="ftr__ai-row"><a class="btn btn--ghost" data-ai="chatgpt" href="https://chatgpt.com/" target="_blank" rel="noopener">Ask ChatGPT</a><a class="btn btn--ghost" data-ai="claude" href="https://claude.ai/new" target="_blank" rel="noopener">Ask Claude</a></div></div>`
     : '';
-  return `<footer class="ftr" data-ftr>
+  return `<footer class="ftr dark" data-ftr>
   <div class="ftr__cta wrap">
     ${lbl('Start a project')}
     <h2 class="h-xl ftr__title" data-split>Let’s build something remarkable.</h2>
@@ -160,11 +179,12 @@ function footer() {
 </footer>`;
 }
 
-export function shell({ page, root, title, description, body, bodyAttrs = '', base = '' }) {
+export function shell({ page, path: urlPath, noindex = false, project, root, title, description, body, bodyAttrs = '', base = '' }) {
   const fullTitle = title ? `${title} — Tifferend` : site.title;
   const desc = description || site.description;
+  const pageUrl = site.url && urlPath !== undefined ? `${site.url}/${urlPath}` : '';
   const og = site.url
-    ? `<meta property="og:url" content="${site.url}/${page === 'home' ? '' : page}"><meta property="og:image" content="${site.url}/media/work/mm-wordmark-1280.webp">`
+    ? `${pageUrl ? `<link rel="canonical" href="${pageUrl}"><meta property="og:url" content="${pageUrl}">` : ''}<meta property="og:image" content="${site.url}/media/brand/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="The Tifferend wordmark"><meta name="twitter:image" content="${site.url}/media/brand/og-image.jpg">`
     : '';
   const html = `<!doctype html>
 <html lang="en" class="no-js">
@@ -174,9 +194,10 @@ export function shell({ page, root, title, description, body, bodyAttrs = '', ba
 ${base ? `<base href="${base}">` : ''}
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(desc)}">
-<meta name="theme-color" content="#000000">
-<meta name="color-scheme" content="dark">
-<meta property="og:type" content="website"><meta property="og:title" content="${esc(fullTitle)}"><meta property="og:description" content="${esc(desc)}">${og}
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light">
+${noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta property="og:type" content="website"><meta property="og:site_name" content="Tifferend"><meta property="og:title" content="${esc(fullTitle)}"><meta property="og:description" content="${esc(desc)}">${og}
+${structuredData(page, pageUrl, project)}
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content="@tifferend">
 <link rel="icon" href="${favicon}">
 <script>(function(d){var h=d.documentElement;h.className=h.className.replace('no-js','js');try{var r=matchMedia('(prefers-reduced-motion: reduce)').matches;if(r)h.classList.add('reduced');else if(!sessionStorage.getItem('tifferend-loaded'))h.classList.add('show-loader')}catch(e){}})(document)</script>

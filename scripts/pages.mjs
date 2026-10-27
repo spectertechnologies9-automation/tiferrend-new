@@ -6,7 +6,7 @@ import { clients } from '../src/data/clients.js';
 import { testimonials, sampleTestimonials } from '../src/data/testimonials.js';
 import { story, philosophy, values, process, studioMedia } from '../src/data/studio.js';
 import { esc, img, lbl, arrow, largest } from './lib.mjs';
-import { wm3 } from './shell.mjs';
+import { wm3, clientRow } from './shell.mjs';
 import { FIGURE } from '../src/data/figure-outline.js';
 
 export const projects = allProjects.filter((p) => site.showDraftProjects || !p.draft);
@@ -51,7 +51,7 @@ function heroArt() {
 }
 
 function hero() {
-  return `<section class="hero" data-hero aria-labelledby="hero-title">
+  return `<section class="hero dark" data-hero aria-labelledby="hero-title">
   <div class="hero__pin" data-hero-pin>
     <div class="hero__media" data-hero-media>
       <picture class="hero__poster">
@@ -134,7 +134,7 @@ function servicesBlock() {
     </li>`;
     })
     .join('');
-  return `<section class="svc" data-svc aria-labelledby="svc-title">
+  return `<section class="svc dark" data-svc aria-labelledby="svc-title">
   <div class="svc__bg" aria-hidden="true">${imgs}<div class="svc__dim"></div></div>
   <div class="svc__inner wrap">
     ${head('Services', 'Every way a brand is seen.', { id: 'svc-title' })}
@@ -195,6 +195,25 @@ function studioBlock() {
 }
 
 // Process / how we work (PDF: numbered stages; verbatim from the current site).
+// Client marks right after the hero (client request, and the order of the approved Lovable page).
+// The same strip as the footer's, which the homepage hides so the logos appear once.
+function clientsStrip() {
+  return `<section class="hclients" aria-labelledby="hclients-title">
+  <p class="lbl wrap" id="hclients-title">Select clients</p>
+  <div class="marq" data-marq><ul class="marq__track">${clientRow()}</ul><ul class="marq__track" aria-hidden="true">${clientRow(true)}</ul></div>
+</section>`;
+}
+
+// Careers: the last section before the footer (homepage and About).
+function careersBlock() {
+  return `<section class="join wrap" id="careers" aria-labelledby="careers-title">
+  ${lbl('Careers')}
+  <h2 class="h-xl" id="careers-title" data-split>Let’s do things <em>tifferendly</em>.</h2>
+  <p class="body-l">Content, film, design and strategy roles open now.</p>
+  <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
+</section>`;
+}
+
 function contactBlock() {
   return `<section class="hct wrap" id="contact" aria-labelledby="hct-title">
   <div class="hct__intro">
@@ -208,7 +227,7 @@ function contactBlock() {
 }
 
 export function home() {
-  return [hero(), intro(), selected(), servicesBlock(), studioBlock(), testimonialsBlock(), contactBlock()].join('\n');
+  return [hero(), clientsStrip(), intro(), selected(), servicesBlock(), studioBlock(), testimonialsBlock(), contactBlock(), careersBlock()].join('\n');
 }
 
 /* ---------------------------------------------------------------- WORK */
@@ -293,7 +312,7 @@ export function project(p) {
   </section>
   ${p.draft ? `<aside class="pj__draft wrap" role="note"><p class="lbl">Draft</p><p>This project is carried over from Tifferend’s current site while the full case study is prepared. Images and scope are as published there; results will be added once confirmed.</p></aside>` : ''}
   ${p.sections.map(section).join('\n')}
-  <a class="pj__next" href="{{root}}work/${next.slug}/" data-cursor-label="Next">
+  <a class="pj__next dark" href="{{root}}work/${next.slug}/" data-cursor-label="Next">
     ${img(next.cover, { alt: '', sizes: '100vw', cls: 'pj__next-img' })}
     <span class="pj__next-txt"><span class="lbl">Next project</span><span class="h-xl">${esc(next.client)}</span></span>
   </a>
@@ -353,12 +372,7 @@ export function about() {
   ${head('What we value', 'Four things we won’t compromise on.')}
   <ul class="vals__list">${values.map((v, i) => `<li><h3 class="h-md">${esc(v.title)}</h3><p>${esc(v.text)}</p></li>`).join('')}</ul>
 </section>
-<section class="join wrap">
-  ${lbl('Careers')}
-  <h2 class="h-xl" data-split>Let’s do things <em>tifferendly</em>.</h2>
-  <p class="body-l">Content, film, design and strategy roles open now.</p>
-  <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
-</section>`;
+${careersBlock()}`;
 }
 
 /* ---------------------------------------------------------------- CONTACT */
