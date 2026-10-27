@@ -31,6 +31,10 @@ Client: "increase negative space" and "zoom out the content slightly". The chang
 - The homepage is slightly *shorter* overall despite the extra spacing, because the content itself is more compact.
 - `npm test`: **199 passed, 0 failed** (Chrome, Firefox, WebKit).
 
+**Deployed:** commit `f666382` pushed to `main`. Actions run 40548306614 passed (build and deploy).
+- Live (https://spectertechnologies9-automation.github.io/tiferrend-new/), checked with `tests/live.mjs` on desktop and mobile: pages, hero, project refresh, 404, no failed requests.
+- The deployed CSS reports `--max 1480px`, section heads 44.6 px and a 28.8 px tile gap.
+
 ## Session 8b: white theme, building on the existing site
 
 The client confirmed: **predominantly white backgrounds, black type, tasteful orange accents**, evolving the current site rather than rebuilding it. This settles the colour question left open in 8a.
