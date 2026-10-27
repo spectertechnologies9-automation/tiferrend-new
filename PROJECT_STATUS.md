@@ -52,7 +52,11 @@ The client confirmed: **predominantly white backgrounds, black type, tasteful or
 3. Real testimonial films.
 4. Whether the footer should also go white. It's black now because the closing wordmark dances over the studio film, which needs a dark stage.
 
-**Not yet deployed** (the client is reviewing locally).
+**Deployed 27 Oct 2026:** commit `3dd87b9` pushed to `main`. GitHub Actions run 40540765218 passed (build and deploy).
+- Live: https://spectertechnologies9-automation.github.io/tiferrend-new/
+- Verified on the live site (`tests/live.mjs`, desktop and mobile): pages load, the hero animates, the project route survives a refresh, and the 404 page renders.
+- `robots.txt`, `sitemap.xml` and the share image are served; canonical links, `color-scheme: light` and the Organization JSON-LD are present.
+- The white sections render live.
 
 ## Session 8a: staged refinement, building on the existing site
 
