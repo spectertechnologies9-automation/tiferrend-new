@@ -1,8 +1,26 @@
 # PROJECT_STATUS — Tifferend website
 
-_Last updated: 27 Oct 2026 (session 8c: negative space and content scale). Build in `Desktop/tifferend final/`._
+_Last updated: 28 Oct 2026 (session 8d: services on white, careers band, orange accent). Build in `Desktop/tifferend final/`._
 
-## Session 8c: more negative space, content zoomed out slightly (read this first)
+## Session 8d: services on white, careers band, orange accent (read this first)
+
+**Already in place, kept:** white-dominant theme with a black footer (8b), Careers before the footer (8a), the full six-service list, and SEO/AEO (untouched this round as instructed; checked intact after the build).
+
+**Changes**
+- **Services (Bold & Beyond, "Golden Beyond" in the brief):** moved from a dark full-bleed section to white.
+  - Names sit on fine rules: grey when inactive, black italic when active.
+  - The active row shows its line and an orange "See N projects" link.
+  - The imagery changes in a sticky 4:5 panel beside the list; it sits above the list on mobile. The liquid swap is kept.
+  - All six services and their lines come unchanged from `services.js`.
+  - Source film frames carry thin black edge columns, cropped by a 3% zoom.
+- **Careers:** a warm-surface band before the black footer: heading, line and orange CTA to the existing careers form (`site.careersUrl`), plus a real behind-the-scenes frame from `studio.js`. No openings or details invented.
+- **Orange as the signature accent:** the selected Work filter is now orange (was black), alongside the existing orange CTAs, labels, link hovers, focus rings and "see work" links.
+
+**Tests:** `npm test` **199/0** (Chrome, Firefox, WebKit). Contrast check: all text passes AA; the only flagged readings are header blend artefacts. Services and careers captured at 1440 and 390, with no horizontal overflow and no console errors.
+
+**Remaining client inputs:** the logo vector (the current trace is used), licensed PP Editorial Old and Suisse BP Intl fonts, landscape showreel footage, testimonial films, more portfolio photos, and careers copy beyond the current line.
+
+## Session 8c: more negative space, content zoomed out slightly
 
 Client: "increase negative space" and "zoom out the content slightly". The changes are measured and token-led, with no layout or identity changes. All in `src/styles/main.css`.
 

@@ -121,7 +121,7 @@ function selected() {
 
 function servicesBlock() {
   const imgs = services
-    .map((s, i) => img(s.image, { alt: '', sizes: '100vw', cls: `svc__img${i === 0 ? ' is-active' : ''}`, attrs: `data-i="${i}"` }))
+    .map((s, i) => img(s.image, { alt: '', sizes: '(min-width: 900px) 38vw, 90vw', cls: `svc__img${i === 0 ? ' is-active' : ''}`, attrs: `data-i="${i}"` }))
     .join('');
   const rows = services
     .map((s, i) => {
@@ -134,12 +134,16 @@ function servicesBlock() {
     </li>`;
     })
     .join('');
-  return `<section class="svc dark" data-svc aria-labelledby="svc-title">
-  <div class="svc__bg" aria-hidden="true">${imgs}<div class="svc__dim"></div></div>
+  // Bold & Beyond: names on fine rules on white, the active one in black italic with its line and the
+  // work in orange; the section's imagery changes beside the list (a sticky panel) as the row changes.
+  return `<section class="svc" data-svc aria-labelledby="svc-title">
   <div class="svc__inner wrap">
     ${head('Services', 'Every way a brand is seen.', { id: 'svc-title' })}
     <p class="svc__hint" aria-hidden="true"><span class="svc__hint-fine">Hover a service to preview, click to see the work.</span><span class="svc__hint-touch">Tap a service to preview, tap again for the work.</span></p>
-    <ol class="svc__list">${rows}</ol>
+    <div class="svc__grid">
+      <ol class="svc__list">${rows}</ol>
+      <div class="svc__bg" aria-hidden="true">${imgs}</div>
+    </div>
   </div>
 </section>`;
 }
@@ -206,11 +210,18 @@ function clientsStrip() {
 
 // Careers: the last section before the footer (homepage and About).
 function careersBlock() {
-  return `<section class="join wrap" id="careers" aria-labelledby="careers-title">
-  ${lbl('Careers')}
-  <h2 class="h-xl" id="careers-title" data-split>Let’s do things <em>tifferendly</em>.</h2>
-  <p class="body-l">Content, film, design and strategy roles open now.</p>
-  <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
+  // A band on the warm surface tone, with a real behind-the-scenes frame, closing into the black footer.
+  const bts = studioMedia.find((m) => m.type !== 'video');
+  return `<section class="join" id="careers" aria-labelledby="careers-title">
+  <div class="join__inner wrap">
+    <div class="join__text">
+      ${lbl('Careers')}
+      <h2 class="h-xl" id="careers-title" data-split>Let’s do things <em>tifferendly</em>.</h2>
+      <p class="body-l">Content, film, design and strategy roles open now.</p>
+      <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
+    </div>
+    ${bts ? `<figure class="join__media">${img(bts.src.replace(/-1080\.jpg$/, ''), { alt: bts.alt, sizes: '(min-width: 900px) 40vw, 90vw' })}</figure>` : ''}
+  </div>
 </section>`;
 }
 
