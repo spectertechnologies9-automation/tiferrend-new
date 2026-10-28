@@ -18,6 +18,10 @@ _Last updated: 28 Oct 2026 (session 8d: services on white, careers band, orange 
 
 **Tests:** `npm test` **199/0** (Chrome, Firefox, WebKit). Contrast check: all text passes AA; the only flagged readings are header blend artefacts. Services and careers captured at 1440 and 390, with no horizontal overflow and no console errors.
 
+**Deployed:** commit `a59a009` pushed to `main`. Actions run 40623770790 succeeded.
+- Live site checked with `tests/live.mjs` (desktop and mobile): pages, hero, project refresh, 404, no failed requests.
+- On the live site the services hover swaps images on white, and the careers band and black footer are present.
+
 **Remaining client inputs:** the logo vector (the current trace is used), licensed PP Editorial Old and Suisse BP Intl fonts, landscape showreel footage, testimonial films, more portfolio photos, and careers copy beyond the current line.
 
 ## Session 8c: more negative space, content zoomed out slightly
