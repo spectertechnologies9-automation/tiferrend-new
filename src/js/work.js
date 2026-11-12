@@ -48,14 +48,15 @@ export async function init() {
   apply(initial, { animate: false, push: false });
   if (initial !== 'all') chips.find((c) => c.dataset.filter === initial)?.scrollIntoView({ block: 'nearest', inline: 'center' });
 
-  // Desktop parallax: alternate slots drift at different speeds (transform only).
+  // Desktop parallax: alternate slots drift at different speeds (transform only). The whole card
+  // drifts, so the caption stays attached to its picture.
   if (env.reduced || !window.matchMedia('(min-width: 900px)').matches) return;
   const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
   gsap.registerPlugin(ScrollTrigger);
   const speeds = [-6, 10, -3, 7, -9, 4];
   items.forEach((it) => {
-    const frame = $('.wk__frame', it);
-    gsap.fromTo(frame, { yPercent: 0 }, {
+    const card = $('.wk__link', it);
+    gsap.fromTo(card, { yPercent: 0 }, {
       yPercent: () => speeds[+getComputedStyle(it).getPropertyValue('--slot') || 0],
       ease: 'none',
       scrollTrigger: { trigger: it, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },

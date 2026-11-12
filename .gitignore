@@ -14,3 +14,6 @@ dist-v/
 # Generated from src/data/site.js by scripts/build-pages.mjs
 /public/sitemap.xml
 /public/robots.txt
+
+# hero guard: per-run captures
+tests/hero-baseline/now-*.png

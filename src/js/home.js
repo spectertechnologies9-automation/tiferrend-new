@@ -53,8 +53,14 @@ function servicesBlock() {
   const imgs = $$('.svc__img', root);
   let pointer = 'mouse';
   root.addEventListener('pointerdown', (e) => { pointer = e.pointerType; }, { passive: true });
+  // On white by default; the active service's picture is revealed behind the whole section (and the list
+  // turns white over it) while a service is hovered, focused or tapped.
+  const list = $('.svc__list', root);
+  let revealed = false;
+  const reveal = (on) => { if (on === revealed) return; revealed = on; root.classList.toggle('is-revealed', on); };
   let active = 0;
   const set = (i) => {
+    reveal(true);
     if (i === active) return;
     active = i;
     items.forEach((it, k) => it.classList.toggle('is-active', k === i));
@@ -70,10 +76,13 @@ function servicesBlock() {
     link.addEventListener('focus', () => link.matches(':focus-visible') && set(i)); // keyboard only; taps are handled below
     // Touch: first tap previews (image + route to the work), second tap opens the filtered Work page.
     link.addEventListener('click', (e) => {
-      if (pointer !== 'mouse' && e.detail > 0 && active !== i) { e.preventDefault(); set(i); }
+      if (pointer !== 'mouse' && e.detail > 0 && (active !== i || !revealed)) { e.preventDefault(); set(i); }
       pointer = 'mouse';
     });
   });
+  list.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') reveal(false); });
+  list.addEventListener('focusout', (e) => { if (!list.contains(e.relatedTarget)) reveal(false); });
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting) reveal(false); }).observe(root);
   new IntersectionObserver(([e], o) => {
     if (!e.isIntersecting) return;
     imgs.forEach((im) => { im.loading = 'eager'; });
@@ -132,25 +141,6 @@ async function scrollScenes() {
       gsap.from($('.tile__label', t), { y: 40, opacity: 0, duration: 1.1, ease: 'expo.out', delay: (i % 2) * 0.08, scrollTrigger: { trigger: t, start: 'top 70%' } });
     });
 
-    // Studio strip: the section is as tall as the strip is wide; a sticky stage moves the track sideways.
-    const hz = $('[data-hz]');
-    const track = $('[data-hz-track]');
-    if (hz && track) {
-      const distance = () => Math.max(0, track.scrollWidth - innerWidth);
-      const size = () => { hz.style.height = `${innerHeight + distance()}px`; };
-      size();
-      const tween = gsap.to(track, {
-        x: () => -distance(), ease: 'none',
-        scrollTrigger: { trigger: hz, start: 'top top', end: 'bottom bottom', scrub: 0.5, invalidateOnRefresh: true, onRefreshInit: size },
-      });
-      $$('.hz__item', track).forEach((it, i) => {
-        const fr = $('.hz__frame', it);
-        fr.removeAttribute('data-flow'); // the scrubbed wave below replaces the CSS one (a CSS animation would win over it)
-        gsap.set(fr, { clipPath: wave(100, 0) });
-        gsap.to(fr, { ease: 'none', keyframes: { clipPath: [wave(100, 0), wave(55, 9, i), wave(0)] }, scrollTrigger: { trigger: it, containerAnimation: tween, start: 'left 95%', end: 'left 55%', scrub: true } });
-      });
-      return () => { hz.style.height = ''; };
-    }
   });
 }
 

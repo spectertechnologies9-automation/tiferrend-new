@@ -21,6 +21,8 @@ Durable rules for anyone (human or agent) working here.
 - Bulk edits by script: never put `$$` in a `String.replace` replacement (it collapses to `$`); use split/join.
 - Header logo: `hdrMark()` in `shell.mjs` clips each glyph with rectangular windows. `src/js/logoreveal.js` morphs them dot → bar → full when the header logo appears (after the loader, or on leaving the homepage hero), on hover or focus, and rarely when idle. Without JS the windows cover the glyphs.
 - Client logos: on the homepage a "Select clients" strip sits right after the hero (client request, matching the Lovable order), and the footer copy is hidden there. Other pages show the strip in the footer, above the closing wordmark. Careers (`careersBlock()`) is the last section before the footer on home and About.
+- Homepage order (redesign, Nov 2026): hero (locked) · clients (`#intro`, the hero's Scroll target) · Selected work (4 tiles, 2×2, edge to edge, no gaps; client + category bottom-left on the picture, no gradient or box) · Services (numbered list on white; hover/focus/first tap reveals that service's picture behind the whole section via `.svc.is-revealed`, click opens `work/?service=…`; no service pages) · Studio `#studio` (philosophy + quote, real BTS mosaic, Process `#process` as 01/02/03 steps) · client films · enquiry · careers · footer. "Understand, Create, Amplify" lives only as the numbered process steps.
+- The hero is locked: `node tests/hero-guard.mjs check` (with `vite preview --port 4173` on a fresh build) must report `unchanged: true` after any change. It fingerprints the hero markup, `hero3d.js`, hero CSS rules and geometry, and compares static screenshots in `tests/hero-baseline/`.
 - SEO: `site.url` drives canonical, og:url and og:image (`media/brand/og-image.jpg`), and the JSON-LD (`structuredData()` in `shell.mjs`). Structured data uses only published facts. `build-pages.mjs` generates `public/sitemap.xml` and `robots.txt` (git-ignored) from indexable pages; draft projects and the 404 page are noindex.
 - Footer wordmark: `src/js/footerdance.js`, lazy-loaded near the footer, never under reduced motion. Each glyph is `<g class="fgw">` (waves, scatter, pointer springs) wrapping `<use class="fg">` (bounce). Keep those layers separate.
 - Lenis `preventDefault`s wheel events while stopped (any open dialog stops it), so every scrollable overlay needs `data-lenis-prevent`. Scroll areas inside a sheet need a flex column with `min-height: 0`, not a grid row.
@@ -30,7 +32,7 @@ Durable rules for anyone (human or agent) working here.
 
 ## Brand (verified 23 Oct 2026 on tifferend-brand-journey.lovable.app)
 - Colours (client direction, Oct 2026): **predominantly white**. Page `--bg #fff`, text `--fg #0b0b0b`, brand accent `#FF7F4D` for fills and large marks, `--ember-text #c24d1c` for small orange text and focus rings on white (AA), and `--on-accent` black text on orange fills. Dark "stages" use the original palette through the `.dark` class (hero, services, footer, loader, next-project panel), which re-declares the tokens. Use the semantic tokens (`--bg`, `--fg`, `--text`, `--soft`, `--mute`, `--line`, `--surface`); never hard-code white for text outside a `.dark` stage or imagery. Mono client logos render black on white and white inside `.dark`. Don't add unrelated colours; project pages may theme with the project's own palette (`theme` in projects.js).
-- Fonts (client, Oct 2026): **PP Editorial Old** for headings, titles and editorial emphasis; **Suisse BP International** for body text.
+- Fonts (client, Oct 2026): **PP Editorial Old** for headings, titles and editorial emphasis; **Suisse BP International** for body text; **DM Mono** (OFL, self-hosted via `@fontsource/dm-mono`, `--f-meta`) for labels, numbering and metadata.
   - Both are commercial and not yet licensed or installed. The `@font-face` slots use `local()` only; see `public/fonts/README.md` to add the woff2 files.
   - Until then the stacks fall back to self-hosted Lora (display) and Inter (text).
   - Display type is set at regular weight (400) with italic, bold (700) and ember-underline emphasis. Never ship unlicensed font files.
@@ -38,11 +40,11 @@ Durable rules for anyone (human or agent) working here.
 - Type and space (client: "more negative space, zoom out slightly", Oct 2026):
   - Scale at 1440: xxl 75, xl 45, lg 29, statement 22, body 16–17.
   - `--sec` 80–176px, `--gutter` 20–88px, content `--max` 1480px.
-  - Work tiles sit inside the page margins with a gap.
+  - Homepage Selected work tiles run edge to edge with no gaps (Kingdom & Sparrow); the Work page grid stays inside the margins.
   - Keep imagery dominant and body text at 16px or more; don't scale type back up.
-  - No tracked uppercase monospace labels and no index numbers.
+  - Labels (`.lbl`, ember) and metadata (`.meta`, muted) are DM Mono 11.5px uppercase, single line. Numbers only where they order something (services, process steps).
   - Fine rules only where a reference calls for them: service rows (Bold & Beyond) and Info panel rows (Mensch).
-  - Square buttons; headlines held to two lines. The PDF §06 small label + large headline pair stays, set as a sentence-case ember label.
+  - Square buttons; headlines held to two lines. The PDF §06 small label + large headline pair stays, the label in DM Mono.
 - Wordmark: the authentic lowercase "tifferend" logo, traced 1:1 to vector in `src/data/wordmark.js`. Never retype it in a font or substitute another mark. Replace the path only with an official vector from the studio.
 - The loader is a rebuild of the live site's preloader (grain, six mono words with ember dashes, extruded logo flip-in, 120px ember line, once per session). Keep it. It must never wait on the network; the CSS failsafe hides it after 6s.
 

@@ -2,6 +2,34 @@
 
 _Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT ⇄ TIFFEREND swap). Build in `Desktop/tifferend final/`._
 
+## Session 10: redesign below the hero (branch `redesign-2026-11`, read this first)
+
+The hero is unchanged: `tests/hero-guard.mjs` (new) fingerprints the hero markup, `hero3d.js`, the hero CSS rules and computed geometry, and compares reduced-motion screenshots at 1440 and 390 against `tests/hero-baseline/`. Result after the last build: `unchanged: true`.
+
+What changed:
+- DM Mono (OFL, `@fontsource/dm-mono`) for labels, numbering and metadata (`--f-meta`, `.lbl`, new `.meta`).
+- Homepage order: hero · clients · Selected work · Services · Studio (+ Process) · client films · enquiry · careers · footer. The separate intro statement and the pinned studio strip were removed; their content now lives in the Studio section.
+- Selected work: four tiles, 2 × 2, edge to edge with no gaps. Client and category sit bottom-left on the picture, no gradient or box, always visible, and the whole tile is a link. Tiles stack on mobile (3:2, 4:5 under 600px).
+- Services: a numbered list on white. Hover, keyboard focus or a first tap reveals that service's picture behind the whole section, and the list turns white over it. A click (or second tap) opens `work/?service=…`. There are no service pages.
+- Studio: philosophy heading and quote (lit word by word), a mosaic of real behind-the-scenes media (BTS film plus 3 stills, DM Mono captions), and the Process as three numbered steps (01 Understand / 02 Create / 03 Amplify). The steps replace the old "Understand, Create, Amplify" block.
+- Careers uses the studio room still, so it no longer repeats a mosaic picture.
+- Work page: centred head, DM Mono filter chips, captions as client plus DM Mono meta lines. The parallax now moves the whole card, so captions stay attached to their pictures.
+- Footer and testimonial labels use DM Mono.
+
+Tests (13 Nov 2026, build with `SITE_BASE=/tifferend/`):
+- `npm test`: 199/199 on the first run. On a rerun, 198/199: WebKit threw `Invalid qualified name: 'scaleX,scaleY'` from `gsap.quickSetter(el, 'scale')` in `hero3d.js` (the session 9 letter swap, fires every 5 s, so intermittent). It is hero code, left untouched because the hero is locked. The likely fix is two setters (`scaleX` and `scaleY`), pending the client's OK.
+- Hero guard: unchanged.
+- Overflow: none at 390 or 1440.
+- Mobile service tap previews without navigating.
+- `tests/contrast.mjs`: all text AA except `.hdr__link` reading 1.0, a measurement artefact of the header's `mix-blend-mode: difference` (unchanged; it renders black on white).
+- `tests/scrollperf.mjs`: p50 16.7 ms, p95 17.0 ms, 3 frames over 25 ms.
+
+Missing assets (documented, not invented):
+- Licensed PP Editorial Old and Suisse BP International woff2 files (Lora/Inter fallbacks in use).
+- Team and studio photography beyond the one BTS shoot.
+- Real client testimonial films (sample slots stay labelled as samples).
+- Verified case studies and imagery for the draft projects. The Maison Luxe cover is an old AI image with garbled lettering on the packs and should be replaced.
+
 ## Session 9: production-footage hero + DIFFERENT ⇄ TIFFEREND (read this first)
 
 Scope: the hero background and a new wordmark animation only. Nothing else on the site changed.

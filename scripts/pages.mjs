@@ -27,6 +27,7 @@ const emph = (t) => {
   const weak = /(\S+\s+(?:on|from|in|of|to|up|it|for))([.!?,…]*)$/; // a trailing particle takes its verb along
   return weak.test(s) ? s.replace(weak, '<em>$1</em>$2') : s.replace(/(\S+?)([.!?,…]*)$/, '<em>$1</em>$2');
 };
+const meta = (t, cls = '') => `<span class="meta${cls ? ` ${cls}` : ''}">${esc(t)}</span>`;
 const head = (label, title, { tag = 'h2', id = '', extra = '' } = {}) =>
   `<header class="sec-head">${lbl(label)}<${tag} class="h-xl"${id ? ` id="${id}"` : ''} data-split>${emph(title)}</${tag}>${extra}</header>`;
 
@@ -76,16 +77,6 @@ function collage(text) {
     return `${word} ${after[w]}`;
   }).join(' ');
 }
-// Statement lit word by word as it scrolls past (AUGE-style), not a fade-up.
-function intro() {
-  return `<section class="intro wrap" id="intro">
-  ${lbl('The philosophy')}
-  <h2 class="h-xl intro__title" data-split>${emph(philosophy.heading)}</h2>
-  <p class="statement intro__body" data-lightup><span class="q q--open" aria-hidden="true">“</span>${collage(philosophy.paragraphs[1])}<span class="q q--close" aria-hidden="true">”</span></p>
-  <a class="link-arrow intro__link" href="{{root}}about/">${esc(philosophy.close)} ${arrow}</a>
-</section>`;
-}
-
 function tile(p, i) {
   const t = p.tile || {};
   return `<a class="tile" href="{{root}}work/${p.slug}/" style="--focus:${t.focus || '50% 50%'};--mfocus:${t.mobileFocus || t.focus || '50% 50%'}" data-cursor-label="View">
@@ -95,38 +86,35 @@ function tile(p, i) {
 }
 
 function selected() {
+  // Kingdom & Sparrow: four large pictures, 2 × 2, edge to edge; the work carries the section.
   const four = projects.filter((p) => p.featured).sort((a, b) => a.featured - b.featured).slice(0, 4);
   return `<section class="sel" id="work" aria-labelledby="sel-title">
-  <div class="wrap">${head('Selected work', 'Work that gets __remembered__.', { id: 'sel-title', extra: `<a class="link-arrow sec-head__link" href="{{root}}work/">All work ${arrow}</a>` })}</div>
+  <div class="wrap sel__head">${head('Selected work', 'Work that gets __remembered__.', { id: 'sel-title', extra: `<a class="link-arrow sec-head__link" href="{{root}}work/">All work ${arrow}</a>` })}</div>
   <div class="tiles">${four.map(tile).join('')}</div>
 </section>`;
 }
 
 function servicesBlock() {
   const imgs = services
-    .map((s, i) => img(s.image, { alt: '', sizes: '(min-width: 900px) 38vw, 90vw', cls: `svc__img${i === 0 ? ' is-active' : ''}`, attrs: `data-i="${i}"` }))
+    .map((s, i) => img(s.image, { alt: '', sizes: '100vw', cls: `svc__img${i === 0 ? ' is-active' : ''}`, attrs: `data-i="${i}"` }))
     .join('');
   const rows = services
     .map((s, i) => {
       const n = countFor(s.slug);
       return `<li class="svc__item${i === 0 ? ' is-active' : ''}" data-i="${i}">
       <a class="svc__link" href="{{root}}work/?service=${s.slug}" data-i="${i}" aria-describedby="svc-line-${i}">
-        <span class="svc__name">${esc(s.name)}</span>
+        ${meta(pad(i + 1), 'svc__num')}<span class="svc__name">${esc(s.name)}</span>
       </a>
       <div class="svc__meta"><div class="svc__meta-in"><p class="svc__line" id="svc-line-${i}">${esc(s.line)}</p><a class="svc__go" href="{{root}}work/?service=${s.slug}" tabindex="-1">${n ? `See ${n} project${n > 1 ? 's' : ''}` : 'See work'} ${arrow}</a></div></div>
     </li>`;
     })
     .join('');
-  // Bold & Beyond: names on fine rules on white, the active one in black italic with its line and the
-  // work in orange; the section's imagery changes beside the list (a sticky panel) as the row changes.
   return `<section class="svc" data-svc aria-labelledby="svc-title">
+  <div class="svc__bg" aria-hidden="true">${imgs}<div class="svc__dim"></div></div>
   <div class="svc__inner wrap">
-    ${head('Services', 'Every way a brand is seen.', { id: 'svc-title' })}
-    <p class="svc__hint" aria-hidden="true"><span class="svc__hint-fine">Hover a service to preview, click to see the work.</span><span class="svc__hint-touch">Tap a service to preview, tap again for the work.</span></p>
-    <div class="svc__grid">
-      <ol class="svc__list">${rows}</ol>
-      <div class="svc__bg" aria-hidden="true">${imgs}</div>
-    </div>
+    ${head('Services', 'Every way a brand is *seen*.', { id: 'svc-title' })}
+    <p class="svc__hint" aria-hidden="true"><span class="svc__hint-fine">Hover a service to see the work behind it.</span><span class="svc__hint-touch">Tap a service to preview, tap again for the work.</span></p>
+    <ol class="svc__list">${rows}</ol>
   </div>
 </section>`;
 }
@@ -159,33 +147,41 @@ function testimonialsBlock() {
 
 // About / studio (PDF: predominantly visual, real BTS). Desktop: pinned, scrolls sideways. Phones: swipe.
 function studioBlock() {
-  const items = studioMedia
-    .map((m) =>
+  const media = studioMedia
+    .map((m, i) =>
       m.type === 'video'
-        ? `<figure class="hz__item hz__item--video"><div class="hz__frame" data-flow><video data-autoplay muted playsinline loop preload="none" poster="{{root}}${m.poster}" data-src="{{root}}${m.src}" aria-label="${esc(m.alt)}"></video><button class="vidctl" type="button" data-vidctl aria-label="Pause video" aria-pressed="false"><span class="vidctl__i" aria-hidden="true"></span></button></div><figcaption>${esc(m.caption)}</figcaption></figure>`
-        : `<figure class="hz__item"><div class="hz__frame" data-flow>${img(m.src.replace(/-(1080|1280)\.(jpg|webp)$/, ''), { alt: m.alt, sizes: '(min-width: 900px) 34vw, 80vw' })}</div><figcaption>${esc(m.caption)}</figcaption></figure>`
+        ? `<figure class="st__tile st__tile--${i}"><div class="st__frame"><video data-autoplay muted playsinline loop preload="none" poster="{{root}}${m.poster}" data-src="{{root}}${m.src}" aria-label="${esc(m.alt)}"></video><button class="vidctl" type="button" data-vidctl aria-label="Pause video" aria-pressed="false"><span class="vidctl__i" aria-hidden="true"></span></button></div><figcaption>${meta(m.caption)}</figcaption></figure>`
+        : `<figure class="st__tile st__tile--${i}"><div class="st__frame">${img(m.src.replace(/-(1080|1280)\.(jpg|webp)$/, ''), { alt: m.alt, sizes: '(min-width: 900px) 30vw, 50vw' })}</div><figcaption>${meta(m.caption)}</figcaption></figure>`
     )
     .join('');
-  return `<section class="hz" data-hz aria-labelledby="hz-title">
-  <div class="hz__pin" data-hz-pin>
-    <div class="hz__track" data-hz-track>
-      <div class="hz__intro">
-        ${lbl('The studio')}
-        <h2 class="h-xl" id="hz-title" data-split>Made <em>in-house</em>.</h2>
-        <p class="body-l">Strategy, design, film and digital sit in one room, so the idea survives every format. This is the My Mithila film being made, from simulation to grade.</p>
-        <a class="link-arrow" href="{{root}}about/">Inside the studio ${arrow}</a>
-      </div>
-      ${items}
+  // stage headings come from each stage's own outputs ("Research, audience insight & positioning")
+  const join = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} & ${a[a.length - 1]}` : a[0] || '');
+  const stages = process
+    .map((st, i) => `<li class="st__step">
+      <p class="st__step-n">${meta(`${pad(i + 1)} — ${st.title}`)}</p>
+      <h4 class="st__step-t">${esc(join(st.outputs).replace(/^./, (c) => c.toUpperCase()).replace(/ (\w)/g, (m) => m.toLowerCase()))}</h4>
+      <p class="st__step-p">${esc(st.text)}</p>
+    </li>`)
+    .join('');
+  return `<section class="st" id="studio" aria-labelledby="st-title">
+  <div class="st__intro wrap">
+    <div class="st__lead">
+      ${lbl('The studio')}
+      <h2 class="h-xl" id="st-title" data-split>${emph(philosophy.heading)}</h2>
+      <a class="link-arrow" href="{{root}}about/">Inside the studio ${arrow}</a>
     </div>
+    <p class="statement st__quote" data-lightup><span class="q q--open" aria-hidden="true">“</span>${collage(philosophy.paragraphs[1])}<span class="q q--close" aria-hidden="true">”</span></p>
+  </div>
+  <div class="st__mosaic wrap">${media}</div>
+  <div class="st__proc wrap" id="process">
+    <header class="st__proc-head">${lbl('Process')}<h3 class="h-lg">${emph('How we *work*.')}</h3></header>
+    <ol class="st__steps">${stages}</ol>
   </div>
 </section>`;
 }
 
-// Process / how we work (PDF: numbered stages; verbatim from the current site).
-// Client marks right after the hero (client request, and the order of the approved Lovable page).
-// The same strip as the footer's, which the homepage hides so the logos appear once.
 function clientsStrip() {
-  return `<section class="hclients" aria-labelledby="hclients-title">
+  return `<section class="hclients" id="intro" aria-labelledby="hclients-title">
   <p class="lbl wrap" id="hclients-title">Select clients</p>
   <div class="marq" data-marq><ul class="marq__track">${clientRow()}</ul><ul class="marq__track" aria-hidden="true">${clientRow(true)}</ul></div>
 </section>`;
@@ -193,8 +189,8 @@ function clientsStrip() {
 
 // Careers: the last section before the footer (homepage and About).
 function careersBlock() {
-  // A band on the warm surface tone, with a real behind-the-scenes frame, closing into the black footer.
-  const bts = studioMedia.find((m) => m.type !== 'video');
+  // A band on the warm surface tone with Tifferend's own careers image (the studio chair under one lamp,
+  // the careers hero of the current site), closing into the black footer.
   return `<section class="join" id="careers" aria-labelledby="careers-title">
   <div class="join__inner wrap">
     <div class="join__text">
@@ -203,7 +199,7 @@ function careersBlock() {
       <p class="body-l">Content, film, design and strategy roles open now.</p>
       <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
     </div>
-    ${bts ? `<figure class="join__media">${img(bts.src.replace(/-1080\.jpg$/, ''), { alt: bts.alt, sizes: '(min-width: 900px) 40vw, 90vw' })}</figure>` : ''}
+    <figure class="join__media"><img src="{{root}}media/video/studio-poster-wide.jpg" alt="An empty studio chair under a single ember lamp" width="1920" height="1080" loading="lazy" decoding="async"></figure>
   </div>
 </section>`;
 }
@@ -221,7 +217,7 @@ function contactBlock() {
 }
 
 export function home() {
-  return [hero(), clientsStrip(), intro(), selected(), servicesBlock(), studioBlock(), testimonialsBlock(), contactBlock(), careersBlock()].join('\n');
+  return [hero(), clientsStrip(), selected(), servicesBlock(), studioBlock(), testimonialsBlock(), contactBlock(), careersBlock()].join('\n');
 }
 
 /* ---------------------------------------------------------------- WORK */
