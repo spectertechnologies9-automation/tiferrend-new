@@ -1,8 +1,52 @@
 # PROJECT_STATUS — Tifferend website
 
-_Last updated: 28 Oct 2026 (session 8d: services on white, careers band, orange accent). Build in `Desktop/tifferend final/`._
+_Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT ⇄ TIFFEREND swap). Build in `Desktop/tifferend final/`._
 
-## Session 8d: services on white, careers band, orange accent (read this first)
+## Session 9: production-footage hero + DIFFERENT ⇄ TIFFEREND (read this first)
+
+Scope: the hero background and a new wordmark animation only. Nothing else on the site changed.
+
+**Hero background:** replaced completely.
+- **Footage:** Pexels video **8089122 by Ron Lach** (https://www.pexels.com/video/actors-filming-a-scene-on-set-8089122/). It shows a real commercial shoot: director's chair, the monitor showing the take, boom mic, talent under warm set lighting.
+- **Source:** genuine 4K, 4096×2160, 25 fps, H.264, 39 s.
+- **Licence:** Pexels Licence (free for commercial use, no attribution required; not to be resold unaltered or presented as one's own stock).
+- **Edit:** cut with the local ffmpeg 7.1 (imageio-ffmpeg) into a **12 s seamless loop**. The last 1.4 s crossfades into the opening frames; measured seam 4.5 against 1.6 frame-to-frame motion, i.e. about two frames of the handheld drift. Cropped to 16:9; the tall version is a centre 9:16 crop. No audio.
+- **Files:** `shoot-2160.mp4` 6.0 MB, `shoot-1080.mp4` 2.4 MB, `shoot-720.mp4` 1.1 MB, `shoot-tall.mp4` 1.2 MB, plus wide and tall posters.
+- **Loading:** device-pixel source choice (4K only above 2600 px across). Muted, inline, looped, autoplay through the existing `heroVideo()`, pauses off-screen, has a pause button, poster first.
+- **Shade:** `.hero__shade` darkens the wordmark band and the foot for contrast.
+- **Retired:** the astral starfield, floating objects, ember motes and studio line drawing (`astral.js`, `objects.js`, `figure-outline.js`, `heroArt()`, their CSS, the cosmos media). They're in git history.
+
+**DIFFERENT ⇄ TIFFEREND**
+- **Built from the real logo glyphs.** The logo's t and d trade places and the word reads "different". The swap is not retyped in a font, keeping the brand rule.
+- **Found and solved:** the traced t and i stem are one contour joined by the crossbar. The t is split off with complementary clips (cut at x 391, stepping to 389 below the tail, which ends at x 390 before the i's foot begins). At rest the two pieces overlap by one unit, so the logo is pixel-identical.
+- **Spacing measured from rasterised outlines:** the d sits the logo's own n→d gap (82 units) from the i, and the t the same gap from the n. DIFFERENT is re-centred on the logo's midpoint: widths 4258 and 4300 units, one centre line, one baseline.
+- **Motion** (`hero3d.js`, new `.g3__s` layer, GSAP):
+  - Each swap takes 1.7 s plus a 0.55 s landing.
+  - x eases with `back.inOut(1.1)`: a small anticipation as the letters detach, a small overshoot as they land.
+  - The traveller that starts first arcs over the word and toward the viewer; the other passes under and away.
+  - Both lean into the turn (≤9°) and land with a slight squash and recovery. The letters between slide 287 units and give a little.
+- **Sequence:** DIFFERENT enters; with the loader hand-off, the landed TIFFEREND steps aside first. It holds, swaps, then swaps every 5 s.
+- **Conflicts and safety:**
+  - Waves, gestures and flips only run in the gap between swaps.
+  - The travelling light skips the two letters in flight.
+  - Cursor springs measure the moving layer.
+  - Off screen the word holds, and a module flag stops a second cycle.
+  - Reduced motion shows the static logo and the poster.
+
+**Tests (13 Nov 2026)**
+- `tests/swap.mjs` (new), desktop 1440:
+  - Swaps at 3.9, 8.9, 13.8 and 18.9 s, alternating D→T, T→D: intervals 5.0, 4.9, 5.1 s.
+  - Zero overlaps once landed, no console errors.
+- `tests/swap.mjs`, phone 390: intervals 5.0 and 4.9 s, zero overlaps.
+- First visit with the loader: loader ends about 2.0 s, DIFFERENT in by 3.0 s, swap at about 5 s, TIFFEREND at 6 s, no errors.
+- Reduced motion: no transform, no video, poster shown.
+- `npm test`: **199 passed, 0 failed** (Chrome, Firefox, WebKit); the hero video check now expects the new files.
+- `tests/scrollperf.mjs`: p95 17.2 ms (same profile as before).
+- Frames checked: DIFFERENT, mid-swap, settled TIFFEREND, the t–i join (seamless), and phone.
+
+**Note:** the site is vanilla ES modules, not React (the brief mentioned React); the existing GSAP and module structure were reused. No dependencies added.
+
+## Session 8d: services on white, careers band, orange accent
 
 **Already in place, kept:** white-dominant theme with a black footer (8b), Careers before the footer (8a), the full six-service list, and SEO/AEO (untouched this round as instructed; checked intact after the build).
 

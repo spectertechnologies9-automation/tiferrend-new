@@ -2,7 +2,7 @@
 import { site, nav, loaderWords } from '../src/data/site.js';
 import { services } from '../src/data/services.js';
 import { clients } from '../src/data/clients.js';
-import { WORDMARK_VIEWBOX, WORDMARK_GLYPHS } from '../src/data/wordmark.js';
+import { WORDMARK_VIEWBOX, WORDMARK_GLYPHS, DIFFERENT_SHIFT, T_CLIP, I_CLIP } from '../src/data/wordmark.js';
 import { esc, lbl, arrow } from './lib.mjs';
 
 // Glyph row: the wordmark as 7 independently animatable glyphs (<use> of the defs in the page sprite).
@@ -17,8 +17,9 @@ export const wm3 = (layers = 8) =>
   `<span class="wm3" data-wm3 aria-hidden="true">${WORDMARK_GLYPHS.map((g, i) => {
     const x0 = g.x0 - PAD, w = g.x1 - g.x0 + PAD * 2;
     const box = `${x0} -${PAD} ${w} ${H + PAD * 2}`;
-    const layer = (k) => `<svg class="g3__layer" style="--k:${k}" viewBox="${box}" focusable="false" overflow="visible"><use href="#wg${i}"/></svg>`;
-    return `<span class="g3" data-g="${i}" style="left:${((x0 / W) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%"><span class="g3__p"><span class="g3__in">${Array.from({ length: layers }, (_, k) => layer(layers - k)).join('')}<svg class="g3__face" viewBox="${box}" focusable="false" overflow="visible"><use href="#wg${i}"/></svg><svg class="g3__light" viewBox="${box}" focusable="false" overflow="visible"><use class="lt lt--bloom" href="#wg${i}"/><use class="lt lt--tail" href="#wg${i}"/><use class="lt lt--head" href="#wg${i}"/></svg></span></span></span>`;
+    const art = i === 0 ? '<use href="#wg0" clip-path="url(#wgc-t)"/>' : i === 1 ? '<use href="#wg0" clip-path="url(#wgc-i)"/><use href="#wg1"/>' : `<use href="#wg${i}"/>`;
+    const layer = (k) => `<svg class="g3__layer" style="--k:${k}" viewBox="${box}" focusable="false" overflow="visible">${art}</svg>`;
+    return `<span class="g3" data-g="${i}" data-sx="${((DIFFERENT_SHIFT[i] / w) * 100).toFixed(3)}" style="left:${((x0 / W) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%"><span class="g3__s"><span class="g3__p"><span class="g3__in">${Array.from({ length: layers }, (_, k) => layer(layers - k)).join('')}<svg class="g3__face" viewBox="${box}" focusable="false" overflow="visible">${art}</svg><svg class="g3__light" viewBox="${box}" focusable="false" overflow="visible">${['bloom', 'tail', 'head'].map((k) => `<use class="lt lt--${k}" href="#wg${i}"${i === 0 ? ' clip-path="url(#wgc-t)"' : ''}/>`).join('')}</svg></span></span></span></span>`;
   }).join('')}</span>`;
 
 // Header mark: the flat wordmark, each glyph clipped by a few rectangular windows (columns across the
@@ -205,7 +206,7 @@ ${structuredData(page, pageUrl, project)}
 </head>
 <body data-page="${page}" ${bodyAttrs}>
 <a class="skip" href="#main">Skip to content</a>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="${WORDMARK_VIEWBOX}">${WORDMARK_GLYPHS.map((_, i) => `<use href="#wg${i}"/>`).join('')}</symbol><defs>${WORDMARK_GLYPHS.map((g, i) => `<path id="wg${i}" fill="currentColor" pathLength="1" d="${g.d}"/>`).join('')}</defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wm" viewBox="${WORDMARK_VIEWBOX}">${WORDMARK_GLYPHS.map((_, i) => `<use href="#wg${i}"/>`).join('')}</symbol><defs>${WORDMARK_GLYPHS.map((g, i) => `<path id="wg${i}" fill="currentColor" pathLength="1" d="${g.d}"/>`).join('')}<clipPath id="wgc-t" clipPathUnits="userSpaceOnUse"><polygon points="${T_CLIP}"/></clipPath><clipPath id="wgc-i" clipPathUnits="userSpaceOnUse"><polygon points="${I_CLIP}"/></clipPath></defs></svg>
 ${loader()}
 ${header(page)}
 <main id="main" tabindex="-1">

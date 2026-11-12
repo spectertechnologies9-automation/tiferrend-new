@@ -7,7 +7,6 @@ import { testimonials, sampleTestimonials } from '../src/data/testimonials.js';
 import { story, philosophy, values, process, studioMedia } from '../src/data/studio.js';
 import { esc, img, lbl, arrow, largest } from './lib.mjs';
 import { wm3, clientRow } from './shell.mjs';
-import { FIGURE } from '../src/data/figure-outline.js';
 
 export const projects = allProjects.filter((p) => site.showDraftProjects || !p.draft);
 const pad = (n) => String(n).padStart(2, '0');
@@ -33,37 +32,21 @@ const head = (label, title, { tag = 'h2', id = '', extra = '' } = {}) =>
 
 /* ---------------------------------------------------------------- HOME */
 
-// The hero: a dark astral environment (generated for this composition, looped) with the authentic
-// wordmark as per-glyph 3D stacks with living ink clipped inside each letter, and a scroll lift-off.
-// Studio artifact floating in the hero: a model outline framed by a viewfinder, with a focus reticle and
-// two construction lines. Fine strokes, ember only on the rim light and one corner. Decorative.
-function heroArt() {
-  const { outline, inner } = FIGURE;
-  const bracket = (x, y, sx, sy, cls = '') => `<path class="art__br${cls}" pathLength="1" d="M${x} ${y + sy * 64}V${y}H${x + sx * 64}"/>`;
-  return `<div class="hero__art" data-hero-art aria-hidden="true"><svg viewBox="-140 -80 620 1160" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <g class="art__con"><circle cx="169" cy="470" r="300" pathLength="1"/><path d="M-130 62H470" pathLength="1"/></g>
-      <g class="art__frame">${bracket(-100, -40, 1, 1)}${bracket(438, -40, -1, 1, ' art__br--hot')}${bracket(438, 1045, -1, -1)}${bracket(-100, 1045, 1, -1)}</g>
-      <g class="art__fig"><path d="${outline}" pathLength="1"/>${inner.map((d) => `<path class="art__in" d="${d}" pathLength="1"/>`).join('')}</g>
-      <path class="art__rim" d="${outline}" pathLength="1"/>
-      <path class="art__trace" d="${outline}" pathLength="1"/>
-      <g class="art__focus"><circle cx="190" cy="66" r="54"/><path d="M190 4v18M190 110v18M128 66h18M234 66h18M184 66h12M190 60v12"/></g>
-    </svg></div>`;
-}
-
+// The hero: real behind-the-scenes footage of a commercial shoot (looped, shaded for the white type) with
+// the authentic wordmark as per-glyph 3D stacks; hero3d.js swaps its t and d (DIFFERENT ⇄ TIFFEREND).
 function hero() {
   return `<section class="hero dark" data-hero aria-labelledby="hero-title">
   <div class="hero__pin" data-hero-pin>
     <div class="hero__media" data-hero-media>
       <picture class="hero__poster">
-        <source media="(min-aspect-ratio: 1/1)" srcset="{{root}}media/video/cosmos-poster-wide.jpg">
-        <img src="{{root}}media/video/cosmos-poster-tall.jpg" alt="" fetchpriority="high" decoding="async">
+        <source media="(min-aspect-ratio: 1/1)" srcset="{{root}}media/video/shoot-poster-wide.jpg">
+        <img src="{{root}}media/video/shoot-poster-tall.jpg" alt="" fetchpriority="high" decoding="async">
       </picture>
       <video class="hero__video" data-hero-video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1"
-        data-src-tall="{{root}}media/video/cosmos-tall.mp4" data-src-wide="{{root}}media/video/cosmos-720.mp4" data-src-mid="{{root}}media/video/cosmos-720.mp4"></video>
+        data-src-tall="{{root}}media/video/shoot-tall.mp4" data-src-mid="{{root}}media/video/shoot-720.mp4" data-src-wide="{{root}}media/video/shoot-1080.mp4" data-src-uhd="{{root}}media/video/shoot-2160.mp4"></video>
+      <div class="hero__shade"></div>
     </div>
     <div class="hero__grain" aria-hidden="true"></div>
-    <canvas class="hero__astral" data-astral aria-hidden="true"></canvas>
-    ${heroArt()}
     <span class="hero__spark" data-hero-spark aria-hidden="true"></span>
     <h1 class="hero__title" id="hero-title"><span class="sr-only">Tifferend — creative branding studio</span><span class="hero__mark" data-hero-mark>${wm3()}</span></h1>
     <div class="hero__foot" data-hero-foot>

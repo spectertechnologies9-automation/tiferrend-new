@@ -19,7 +19,7 @@ for (const [label, vp, mobile] of [['desktop', { width: 1440, height: 900 }, fal
     css: [...document.styleSheets].some((s) => { try { return s.cssRules.length > 50; } catch { return false; } }),
     fontsLoaded: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family).filter((v, i, a) => a.indexOf(v) === i),
     heroGlyphs: document.querySelectorAll('.g3').length,
-    astral: !!document.querySelector('[data-astral]') && getComputedStyle(document.querySelector('[data-astral]')).opacity,
+    film: (document.querySelector('[data-hero-video]')?.currentSrc || '').split('/').pop(),
     heroMoving: getComputedStyle(document.querySelector('.g3__in')).transform !== 'none',
     images: [...document.images].filter((i) => i.complete && i.naturalWidth > 0).length,
   }));

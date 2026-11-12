@@ -139,7 +139,7 @@ for (const engine of engines) {
     const mark = await page.evaluate(() => getComputedStyle(document.querySelector('[data-hero-mark]')).opacity);
     const vid = await page.evaluate(() => { const v = document.querySelector('[data-hero-video]'); return { src: v.currentSrc.split('/').pop(), paused: v.paused, t: v.currentTime }; });
     ok(`[${engine} ${w}] loader shows on first visit, hands off within 3.6s`, shown && gone && parseFloat(mark) > 0.95, JSON.stringify({ shown, gone, mark }));
-    ok(`[${engine} ${w}] hero film plays (right source)`, !vid.paused && vid.t > 0 && (w < 768 ? /cosmos-tall/.test(vid.src) : /cosmos-720/.test(vid.src)), JSON.stringify(vid));
+    ok(`[${engine} ${w}] hero film plays (right source)`, !vid.paused && vid.t > 0 && (w < 768 ? /shoot-tall/.test(vid.src) : /shoot-(720|1080|2160)/.test(vid.src)), JSON.stringify(vid));
     await page.reload();
     const skipped = await page.evaluate(() => !document.documentElement.classList.contains('show-loader'));
     ok(`[${engine} ${w}] loader skipped on repeat visit`, skipped);

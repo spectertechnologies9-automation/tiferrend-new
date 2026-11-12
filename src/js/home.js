@@ -10,7 +10,8 @@ function heroVideo() {
   const v = $('[data-hero-video]');
   if (!v || env.reduced) return; // the poster <picture> stays
   const wide = matchMedia('(min-aspect-ratio: 1/1)').matches;
-  v.src = !wide ? v.dataset.srcTall : innerWidth * devicePixelRatio > 1600 ? v.dataset.srcWide : v.dataset.srcMid;
+  const px = innerWidth * devicePixelRatio; // device pixels across: 4K only where the screen can show it
+  v.src = !wide ? v.dataset.srcTall : px > 2600 && v.dataset.srcUhd ? v.dataset.srcUhd : px > 1400 ? v.dataset.srcWide : v.dataset.srcMid;
   v.preload = 'auto';
   const play = () => v.play().catch(() => {});
   v.addEventListener('canplay', play, { once: true });

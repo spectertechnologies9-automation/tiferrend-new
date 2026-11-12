@@ -1,12 +1,14 @@
 // Hero wordmark: seven independent 3D glyph stacks (see wm3() in scripts/shell.mjs), clean white faces
-// over a shallow warm extrusion. Motion is restrained and continuous:
+// over a shallow warm extrusion, over the production footage. The word opens as DIFFERENT, then the logo's
+// own d and t dance past each other and trade places: TIFFEREND. Every 5 s it swaps back, and so on.
 //   .g3      scroll beat (lift-off) + cursor springs (x / y / rotation / scale)
+//   .g3__s   the DIFFERENT ⇄ TIFFEREND swap (xPercent / yPercent / rotation / z / scale)
 //   .g3__p   waves and occasional single-letter gestures
 //   .g3__in  slow organic idle drift, each property on its own clock
 // Transforms only, on HTML elements: the compositor does the work.
 import { env, $, $$ } from './env.js';
 
-let flipsStarted = false; // the load-time flip pair runs once per page load, whatever calls heroMotion
+let swapsStarted = false; // the DIFFERENT ⇄ TIFFEREND cycle runs once per page load, whatever calls heroMotion
 
 export async function heroMotion({ handedOff }) {
   const stage = $('[data-hero-mark]');
@@ -19,32 +21,21 @@ export async function heroMotion({ handedOff }) {
   const outers = $$('.g3', wm);
   const pointers = $$('.g3__p', wm);
   const inners = $$('.g3__in', wm);
-  const art = $('[data-hero-art]');
+  const swaps = $$('.g3__s', wm);
+  const sxOf = outers.map((o) => parseFloat(o.dataset.sx) || 0); // xPercent of each glyph in DIFFERENT
   const desktop = matchMedia('(min-width: 900px) and (hover: hover)').matches;
   const amp = desktop ? 1 : 0.6;
 
-  // ---- live astral layer (stars, ember drift, streaks, wireframe artifact)
-  const astralCanvas = $('[data-astral]');
-  let astral = null;
-  if (astralCanvas) {
-    const { initAstral } = await import('./astral.js');
-    astral = initAstral(astralCanvas, { lite: !desktop });
-  }
-  if (env.reduced) {
-    if (astral) { astral.render(); astralCanvas.style.opacity = '1'; }
-    return;
-  }
-  if (astral) gsap.to(astralCanvas, { opacity: 1, duration: 2.4, ease: 'power2.out', delay: 0.3 });
+  if (env.reduced) return; // static logo: TIFFEREND, the poster instead of the film
 
-  // ---- entrance
+  // ---- entrance: the word arrives as DIFFERENT. Set the swapped positions first, then the letters rise
+  // into place from the centre out. With the loader's hand-off, the landed logo (TIFFEREND) steps down out
+  // of the way first, so the opening always reads DIFFERENT → TIFFEREND.
   const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  if (handedOff) {
-    intro.from($$('.g3__layer', wm), { opacity: 0, duration: 1.2, stagger: { each: 0.01, from: 'end' } }, 0)
-      .from(stage, { rotationX: 16, duration: 1.6 }, 0);
-  } else {
-    intro.from(outers, { yPercent: 70, rotationX: -50, opacity: 0, duration: 1.5, stagger: { each: 0.07, from: 'center' } }, 0.05)
-      .from(stage, { rotationY: -12, z: -160, duration: 2, ease: 'expo.out' }, 0);
-  }
+  if (handedOff) intro.to(outers, { yPercent: 40, opacity: 0, duration: 0.38, ease: 'power2.in', stagger: { each: 0.03, from: 'center' } });
+  intro.add(() => swaps.forEach((el, i) => gsap.set(el, { xPercent: sxOf[i] })))
+    .fromTo(outers, { yPercent: 70, rotationX: -50, opacity: 0 }, { yPercent: 0, rotationX: 0, opacity: 1, duration: 1.5, stagger: { each: 0.07, from: 'center' }, immediateRender: !handedOff })
+    .from(stage, { rotationY: -12, z: -160, duration: 2, ease: 'expo.out' }, handedOff ? 0.38 : 0);
   const settled = intro.duration();
   const R = gsap.utils.random;
 
@@ -65,9 +56,11 @@ export async function heroMotion({ handedOff }) {
 
   // ---- choreography on .g3__p: waves across the word, and now and then one letter's own gesture
   const atHero = () => document.body.classList.contains('at-hero');
+  let swapping = false, nextSwap = Infinity; // set by the swap cycle below
+  const free = (d) => !swapping && nextSwap - gsap.ticker.time > d + 0.3; // room for a d-second move before the next swap
   const wave = () => {
     gsap.delayedCall(R(7, 11), wave);
-    if (!atHero()) return;
+    if (!atHero() || !free(2)) return;
     const from = Math.random() < 0.5 ? 'start' : 'end';
     const st = { each: R(0.07, 0.1), from };
     const tilt = (Math.random() < 0.5 ? -1 : 1) * R(3, 5) * amp;
@@ -81,7 +74,7 @@ export async function heroMotion({ handedOff }) {
   ];
   const gesture = () => {
     gsap.delayedCall(R(4.5, 8), gesture);
-    if (!atHero()) return;
+    if (!atHero() || !free(1.9)) return;
     const i = Math.floor(Math.random() * pointers.length);
     if (gsap.isTweening(pointers[i])) return;
     gestures[Math.floor(Math.random() * gestures.length)](pointers[i]);
@@ -89,36 +82,71 @@ export async function heroMotion({ handedOff }) {
   gsap.delayedCall(settled + 1.4, wave);
   gsap.delayedCall(settled + 4.5, gesture);
 
-  // ---- letter flips: every letter turns once around its vertical axis, softly staggered, and lands
-  // back in the logo. One sequence as the loader's logo lands (or as the entrance settles on repeat
-  // visits), a second 2.3 s later, then occasional single flips ~40% more often than before
-  // (was ~1 per 19 s, now ~1 per 13.4 s).
-  const flipSeq = (from = 'start') => gsap.timeline()
-    .to(pointers, { rotationY: '+=360', duration: 1.15, ease: 'power3.inOut', stagger: { each: 0.06, from }, overwrite: 'auto' })
-    .set(pointers, { rotationY: 0 });
+  // ---- DIFFERENT ⇄ TIFFEREND: the d and t detach, travel in opposite directions on arcs (one over the
+  // word, one under, one passing in front of the other), lean into the move, cross, and land with a small
+  // controlled settle; the letters between ease aside a touch as each passes. Swaps start every 5 s.
+  const PERIOD = 5, SWAP = 1.7;
+  let different = true, swapTl = null;
+  const now = () => gsap.ticker.time;
+  const xE = gsap.parseEase('back.inOut(1.1)'); // a small anticipation as they detach, a small overshoot as they land
+  const arcE = gsap.parseEase('sine.inOut');
+  const swap = () => {
+    if (swapTl?.isActive()) return;
+    const toDifferent = !different;
+    const from = swaps.map((el) => gsap.getProperty(el, 'xPercent'));
+    const to = sxOf.map((v) => (toDifferent ? v : 0));
+    const sets = swaps.map((el) => ({
+      x: gsap.quickSetter(el, 'xPercent'), y: gsap.quickSetter(el, 'yPercent'),
+      r: gsap.quickSetter(el, 'rotation', 'deg'), z: gsap.quickSetter(el, 'z', 'px'), sc: gsap.quickSetter(el, 'scale'),
+    }));
+    const last = swaps.length - 1;
+    // the travelling letter that is currently first goes over the word, the last one under it
+    const over = toDifferent ? last : 0, under = toDifferent ? 0 : last;
+    const q = { p: 0 };
+    swapping = true; different = toDifferent;
+    swapTl = gsap.timeline({ onComplete: () => { swapping = false; } })
+      .to(q, {
+        p: 1, duration: SWAP, ease: 'none',
+        onUpdate: () => {
+          const p = q.p, e = xE(p), a = Math.sin(Math.PI * arcE(p));
+          swaps.forEach((el, i) => {
+            const st = sets[i];
+            if (i === over || i === under) {
+              const dir = i === over ? -1 : 1; // over: up and toward the viewer; under: down and away
+              st.x(from[i] + (to[i] - from[i]) * e);
+              st.y(dir * 46 * a * amp);
+              st.r(dir * -9 * Math.sin(Math.PI * p) * amp); // a lean into the turn, upright again on landing
+              st.z(-dir * 140 * a);
+              st.sc(1 + 0.05 * a);
+            } else {
+              // make room: a gentle slide toward the new centring, and a small give as a letter passes
+              st.x(from[i] + (to[i] - from[i]) * arcE(p));
+              st.y(Math.sin(Math.PI * p) * 3.5 * amp * (i % 2 ? 1 : -1));
+            }
+          });
+        },
+      })
+      // landing: a quick, small squash and recovery on the two travellers
+      .to([swaps[over], swaps[under]], { keyframes: { scaleY: [1, 0.95, 1.015, 1], scaleX: [1, 1.03, 0.995, 1] }, duration: 0.55, ease: 'power2.out' }, SWAP - 0.08);
+  };
+  const cycle = () => {
+    nextSwap = now() + PERIOD;
+    gsap.delayedCall(PERIOD, cycle);
+    if (atHero() && !document.hidden) swap(); // off screen: hold the current word, keep the rhythm
+  };
   const flipOne = () => {
     gsap.delayedCall(R(11, 15.8), flipOne);
-    if (!atHero()) return;
+    if (!atHero() || !free(1.4)) return;
     const p = pointers[Math.floor(Math.random() * pointers.length)];
     if (gsap.isTweening(p)) return;
     gsap.timeline().to(p, { rotationY: 360, duration: 1.4, ease: 'power3.inOut' }).set(p, { rotationY: 0 });
   };
-  if (!flipsStarted) {
-    flipsStarted = true;
-    const first = handedOff ? 0.25 : settled * 0.55; // handed off: the stack grows out of the landed logo
-    gsap.delayedCall(first, () => flipSeq('start'));
-    gsap.delayedCall(first + 2.3, () => flipSeq('end'));
-    gsap.delayedCall(first + 2.3 + R(9, 12), flipOne);
-  }
-
-  // ---- studio artifact: draws itself in CSS; here it floats and answers the pointer with depth
-  let artX = null, artY = null;
-  if (art) {
-    gsap.to(art, { y: -10, rotation: 1.2, duration: 5.5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
-    if (desktop) {
-      artX = gsap.quickTo(art, 'x', { duration: 2, ease: 'power3.out' });
-      artY = gsap.quickTo(art, 'xPercent', { duration: 2, ease: 'power3.out' }); // y is the float; parallax rides xPercent
-    }
+  if (!swapsStarted) {
+    swapsStarted = true;
+    const first = settled + 0.9; // DIFFERENT holds a beat once it has landed, then becomes TIFFEREND
+    nextSwap = now() + first;
+    gsap.delayedCall(first, cycle);
+    gsap.delayedCall(first + R(9, 12), flipOne);
   }
 
   // ---- cursor: nearby letters shift and tilt on springs; part of the push travels to neighbours;
@@ -131,7 +159,7 @@ export async function heroMotion({ handedOff }) {
   let boxes = [], measured = 0;
   const measure = () => {
     measured = performance.now();
-    boxes = outers.map((o, i) => { const r = o.getBoundingClientRect(), s = spring[i]; return { x: r.left + r.width / 2 - s.x, y: r.top + r.height / 2 - s.y, w: r.width, h: r.height }; });
+    boxes = swaps.map((o, i) => { const r = o.getBoundingClientRect(), s = spring[i]; return { x: r.left + r.width / 2 - s.x, y: r.top + r.height / 2 - s.y, w: r.width, h: r.height }; });
   };
   addEventListener('resize', () => { measured = 0; });
   const P = { x: -1e4, y: -1e4, vx: 0, vy: 0, t: performance.now() };
@@ -145,7 +173,6 @@ export async function heroMotion({ handedOff }) {
     if (e.pointerType === 'mouse') {
       const nx = e.clientX / innerWidth - 0.5, ny = e.clientY / innerHeight - 0.5;
       sy(nx * 8); sx(-ny * 6);
-      artX?.(-nx * 26); artY?.(-ny * 4);
     }
     const speed = Math.min(2, Math.hypot(P.vx, P.vy) / 18);
     boxes.forEach((b, i) => {
@@ -222,7 +249,7 @@ export async function heroMotion({ handedOff }) {
       return { x: r.left - pr.left + ((p.x - vb.x) / vb.width) * r.width, y: r.top - pr.top + ((p.y - vb.y) / vb.height) * r.height };
     };
     const pick = () => {
-      const others = lights.filter((l) => l !== cur);
+      const others = lights.filter((l) => l !== cur && !(swapping && (l.i === 0 || l.i === lights.length - 1)));
       if (P.x > -1e3 && boxes.length && Math.random() < 0.45) { // drawn toward the pointer
         let best = others[0], bd = Infinity;
         others.forEach((l) => { const b = boxes[l.i]; if (!b) return; const d = Math.hypot(b.x - P.x, b.y - P.y); if (d < bd) { bd = d; best = l; } });
@@ -279,7 +306,6 @@ export async function heroMotion({ handedOff }) {
   gsap.ticker.add((time, deltaMs) => {
     if (!onScreen) return;
     stepSprings(Math.min(0.033, (deltaMs || 16) / 1000));
-    astral?.render();
   });
 
   // ---- scroll beat. scrub: true — Lenis already smooths the scroll; a second lag felt sticky.
@@ -294,7 +320,6 @@ export async function heroMotion({ handedOff }) {
     });
     tl.to(stage, { rotationX: 26, z: -220, ease: 'power1.in', duration: 1 }, 0)
       .fromTo('[data-hero-media]', { scale: 1.12 }, { scale: 1, duration: 1 }, 0)
-      .to('[data-hero-art]', { yPercent: -18, opacity: 0, ease: 'power1.in', duration: 0.7 }, 0.1)
       .to('[data-hero-foot]', { yPercent: 50, opacity: 0, duration: 0.3 }, 0)
       .to('.hero .vidctl', { opacity: 0, duration: 0.2 }, 0);
     return () => tl.kill();
