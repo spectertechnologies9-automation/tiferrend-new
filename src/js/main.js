@@ -46,12 +46,10 @@ async function boot() {
   const ftr = document.querySelector('[data-ftr-mark]');
   if (ftr && !env.reduced) new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect(); import('./footerdance.js').then((d) => d.initFooterDance()).catch(() => {}); }, { rootMargin: '600px 0px' }).observe(ftr);
   magnets();
-  // header logo reveal (fragment windows dot → bar → full), after the loader so the two never overlap
-  if (!env.reduced) loading.then(() => import('./logoreveal.js')).then((m) => m.initLogoReveal()).catch(() => {});
-  // fluid layer: liquid reveals, bends and ripples on real images and type (fluid.js)
+  // header logo: the fragment reveal (dot → bar → full) and the DIFFERENT ⇄ TIFFEREND swap, after the loader
+  if (!env.reduced) loading.then(() => Promise.all([import('./logoreveal.js'), import('./logoswap.js')]).then(([r, s]) => { r.initLogoReveal(); s.initLogoSwap(); })).catch(() => {});
+  // fluid layer: flowing reveals and scroll bends on real images and type (fluid.js)
   if (!env.reduced && !new URLSearchParams(location.search).has('nofluid')) import('./fluid.js').then((m) => m.initFluid()).catch(() => {}); // ?nofluid: diagnostics
-  // cursor ripple: a thin liquid surface that bends content under the pointer (ripple.js)
-  if (!env.reduced) import('./ripple.js').then((m) => m.initRipple()).catch(() => {});
   if (env.finePointer && !env.reduced) import('./trail.js').then(({ initTrail }) => initTrail()).catch(() => {});
   const lenis = await smooth();
   toTop(lenis);

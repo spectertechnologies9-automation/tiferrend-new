@@ -34,7 +34,7 @@ const head = (label, title, { tag = 'h2', id = '', extra = '' } = {}) =>
 /* ---------------------------------------------------------------- HOME */
 
 // The hero: real behind-the-scenes footage of a commercial shoot (looped, shaded for the white type) with
-// the authentic wordmark as per-glyph 3D stacks; hero3d.js swaps its t and d (DIFFERENT ⇄ TIFFEREND).
+// the authentic wordmark as per-glyph 3D stacks, static (the D/T swap lives in the header logo, logoswap.js).
 function hero() {
   return `<section class="hero dark" data-hero aria-labelledby="hero-title">
   <div class="hero__pin" data-hero-pin>
@@ -94,6 +94,10 @@ function selected() {
 </section>`;
 }
 
+// Services, as Bold & Beyond does it: one photograph fills the section, a small "Services" label sits on
+// the left, and the service names stack tightly on the right — the selected one white, the rest faded. No
+// numbers, no rules. Selecting a service (hover, keyboard focus, or a first tap on touch) crossfades the
+// photograph; its line and a link to the filtered Work page sit quietly under the list. No service pages.
 function servicesBlock() {
   const imgs = services
     .map((s, i) => img(s.image, { alt: '', sizes: '100vw', cls: `svc__img${i === 0 ? ' is-active' : ''}`, attrs: `data-i="${i}"` }))
@@ -102,19 +106,17 @@ function servicesBlock() {
     .map((s, i) => {
       const n = countFor(s.slug);
       return `<li class="svc__item${i === 0 ? ' is-active' : ''}" data-i="${i}">
-      <a class="svc__link" href="{{root}}work/?service=${s.slug}" data-i="${i}" aria-describedby="svc-line-${i}">
-        ${meta(pad(i + 1), 'svc__num')}<span class="svc__name">${esc(s.name)}</span>
-      </a>
-      <div class="svc__meta"><div class="svc__meta-in"><p class="svc__line" id="svc-line-${i}">${esc(s.line)}</p><a class="svc__go" href="{{root}}work/?service=${s.slug}" tabindex="-1">${n ? `See ${n} project${n > 1 ? 's' : ''}` : 'See work'} ${arrow}</a></div></div>
+      <a class="svc__link" href="{{root}}work/?service=${s.slug}" data-i="${i}" aria-describedby="svc-line-${i}"><span class="svc__name">${esc(s.name)}</span></a>
+      <div class="svc__meta"><p class="svc__line" id="svc-line-${i}">${esc(s.line)}</p><a class="svc__go" href="{{root}}work/?service=${s.slug}" tabindex="-1">${n ? `See ${n} project${n > 1 ? 's' : ''}` : 'See work'} ${arrow}</a></div>
     </li>`;
     })
     .join('');
   return `<section class="svc" data-svc aria-labelledby="svc-title">
   <div class="svc__bg" aria-hidden="true">${imgs}<div class="svc__dim"></div></div>
   <div class="svc__inner wrap">
-    ${head('Services', 'Every way a brand is *seen*.', { id: 'svc-title' })}
-    <p class="svc__hint" aria-hidden="true"><span class="svc__hint-fine">Hover a service to see the work behind it.</span><span class="svc__hint-touch">Tap a service to preview, tap again for the work.</span></p>
-    <ol class="svc__list">${rows}</ol>
+    <h2 class="svc__label" id="svc-title">Services</h2>
+    <ul class="svc__list">${rows}</ul>
+    <p class="svc__hint" aria-hidden="true">Tap a service to preview, tap again for the work.</p>
   </div>
 </section>`;
 }

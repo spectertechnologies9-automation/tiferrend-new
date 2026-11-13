@@ -2,6 +2,21 @@
 
 _Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT ⇄ TIFFEREND swap). Build in `Desktop/tifferend final/`._
 
+## Session 11: client feedback (branch `client-feedback-2026-11`, read this first)
+
+- **Hero logo static.** A first pass misread the brief and removed the hero logo; that was reverted. The original hero is restored from `main`: markup, CSS, loader landing and the hero logo's size and position are identical. Only `hero3d.js` changed, and the hero logo no longer animates. Hero guard against the deployed original: the only difference was `hero3d`. Geometry and static screenshots are identical, and with animation on, every glyph layer stayed at `transform: none` over 6 s with the cursor moving across it. Baseline re-saved.
+- **D/T swap in the header logo** (`logoswap.js`): t and d trade places on arcs every 5 s, continuous loop, and the header logo is always visible. Measured: they land exactly on DIFFERENT's offsets.
+- **Liquid cursor removed**: `ripple.js` and its CSS are deleted, and the hover ripple is off in `fluid.js`. The ember streak stays.
+- **Services = Bold & Beyond**: one full-bleed photograph per service, crossfading; no numbers or rules; names stacked on the right in the display face (selected: white italic); ember DM Mono label and link; line + link in a fixed slot under the list. It went through three passes on client feedback: rows with rules, then the reference type, then the site's own type. Mobile: the first tap previews, the second opens `work/?service=…`.
+- **Flowing reveal fixed**: reveals reached mid-scroll now upload their texture at once instead of timing out. Also registered: the studio mosaic, Work grid and careers. Measured while scrolling continuously: 3 studio and 6 Work-page reveals active.
+- **Tests (13 Nov 2026)**:
+  - `npm test`: 199/199 (Chrome, Firefox, WebKit).
+  - Hero guard: unchanged.
+  - Contrast: unchanged; only the known `.hdr__link` blend artefact.
+  - No overflow at 390 or 1440.
+- **Before/after screenshots** in `review/` (git-ignored). "Before" is the live site.
+- **Not deployed**: the branch is unmerged.
+
 ## Session 10: redesign below the hero (branch `redesign-2026-11`, read this first)
 
 The hero is unchanged: `tests/hero-guard.mjs` (new) fingerprints the hero markup, `hero3d.js`, the hero CSS rules and computed geometry, and compares reduced-motion screenshots at 1440 and 390 against `tests/hero-baseline/`. Result after the last build: `unchanged: true`.

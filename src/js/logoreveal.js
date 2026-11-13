@@ -1,11 +1,12 @@
 // Header logo reveal (after Mellow's mark, rebuilt for the Tifferend wordmark): each glyph shows
 // through a few rectangular windows. They start as scattered dots, stretch into vertical bars, then widen
-// until the glyph is whole; the reverse dissolves it. Plays when the header logo appears (on load, or as
-// the hero's own wordmark scrolls away on the homepage), on hover / focus, and now and then when idle.
+// until the glyph is whole; the reverse dissolves it. Plays when the page loads (after the loader, whose logo lands on the hero logo),
+// on hover / focus, and now and then when idle. The DIFFERENT ⇄ TIFFEREND swap
+// (logoswap.js) moves the glyph groups around these windows, so the two never interfere.
 // The link is usable throughout; without JS the windows already cover the glyphs.
 import { env, $, $$ } from './env.js';
 
-export async function initLogoReveal() {
+export async function initLogoReveal({ handedOff = false } = {}) {
   const logo = $('[data-hdr-logo]');
   if (!logo || env.reduced) return;
   const rects = $$('clipPath rect', logo);
@@ -42,23 +43,12 @@ export async function initLogoReveal() {
     });
   };
 
-  // play when the logo becomes visible: on the homepage it hides while the hero wordmark is on screen
-  const hidden = () => document.body.classList.contains('at-hero') && !!$('[data-hero]');
-  if (hidden()) {
-    rects.forEach((r) => set(r, { ...dot(r), width: 0, height: 0 }));
-    let was = true;
-    new MutationObserver(() => {
-      const now = hidden();
-      if (was && !now) reveal(true);
-      else if (!was && now) rects.forEach((r) => { gsap.killTweensOf(r); set(r, { ...dot(r), width: 0, height: 0 }); });
-      was = now;
-    }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
-  } else {
-    reveal(true);
-  }
+  // the header logo is always visible (it carries the D/T swap; the hero's large logo is static), so it
+  // reveals once the page is ready (the loader's own logo lands on the hero logo)
+  if (!handedOff) reveal(true);
   logo.addEventListener('pointerenter', () => { if (!tl?.isActive()) dissolveAndReform(); });
   logo.addEventListener('focus', () => { if (!tl?.isActive()) dissolveAndReform(); });
   // an occasional, unhurried re-form while the page is idle and the logo is visible
-  const idle = () => { gsap.delayedCall(R(14, 22), idle); if (!hidden() && !document.hidden && !tl?.isActive()) dissolveAndReform(); };
+  const idle = () => { gsap.delayedCall(R(14, 22), idle); if (!document.hidden && !tl?.isActive()) dissolveAndReform(); };
   gsap.delayedCall(R(14, 22), idle);
 }

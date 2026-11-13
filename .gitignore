@@ -17,3 +17,6 @@ dist-v/
 
 # hero guard: per-run captures
 tests/hero-baseline/now-*.png
+
+# before/after review captures
+review/

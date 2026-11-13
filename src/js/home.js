@@ -53,14 +53,10 @@ function servicesBlock() {
   const imgs = $$('.svc__img', root);
   let pointer = 'mouse';
   root.addEventListener('pointerdown', (e) => { pointer = e.pointerType; }, { passive: true });
-  // On white by default; the active service's picture is revealed behind the whole section (and the list
-  // turns white over it) while a service is hovered, focused or tapped.
-  const list = $('.svc__list', root);
-  let revealed = false;
-  const reveal = (on) => { if (on === revealed) return; revealed = on; root.classList.toggle('is-revealed', on); };
-  let active = 0;
+  // Bold & Beyond: the picture always fills the section. Hover, keyboard focus or a tap selects a service:
+  // its picture flows in, its name turns italic white and its line + link open. The last selection stays.
+  let active = 0, tapped = -1;
   const set = (i) => {
-    reveal(true);
     if (i === active) return;
     active = i;
     items.forEach((it, k) => it.classList.toggle('is-active', k === i));
@@ -74,15 +70,13 @@ function servicesBlock() {
     const wide = matchMedia('(min-width: 900px)');
     link.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse' && wide.matches) set(i); });
     link.addEventListener('focus', () => link.matches(':focus-visible') && set(i)); // keyboard only; taps are handled below
-    // Touch: first tap previews (image + route to the work), second tap opens the filtered Work page.
+    // Touch: the first tap on a service previews it (picture, line and a visible link to the work); a second
+    // tap on the same service opens the filtered Work page.
     link.addEventListener('click', (e) => {
-      if (pointer !== 'mouse' && e.detail > 0 && (active !== i || !revealed)) { e.preventDefault(); set(i); }
+      if (pointer !== 'mouse' && e.detail > 0 && tapped !== i) { e.preventDefault(); tapped = i; set(i); }
       pointer = 'mouse';
     });
   });
-  list.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') reveal(false); });
-  list.addEventListener('focusout', (e) => { if (!list.contains(e.relatedTarget)) reveal(false); });
-  new IntersectionObserver(([e]) => { if (!e.isIntersecting) reveal(false); }).observe(root);
   new IntersectionObserver(([e], o) => {
     if (!e.isIntersecting) return;
     imgs.forEach((im) => { im.loading = 'eager'; });
@@ -150,8 +144,8 @@ export async function init({ lenis, loading }) {
   servicesBlock();
   marquee();
   testimonials();
-  const handedOff = await loading;
-  heroMotion({ handedOff }).catch((e) => console.warn('hero motion', e)); // content stays static if it fails
+  await loading;
+  heroMotion().catch((e) => console.warn('hero motion', e)); // content stays static if it fails
   scrollScenes().catch(() => {});
   if (!lenis) requestAnimationFrame(() => import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => ScrollTrigger.refresh()));
 }

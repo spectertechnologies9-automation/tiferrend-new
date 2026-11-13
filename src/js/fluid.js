@@ -4,12 +4,12 @@
 // the frame into a 2D canvas laid exactly over the <img> (same box, same transform, same filter):
 //   reveal   a liquid front rises through the image, bending and splitting colour at its edge
 //   bend     the picture bows with scroll velocity, like a sheet moving through water
-//   ripple   on hover, rings run out from the pointer with a slight chromatic split
 //   swap     two images exchange through a flowing threshold (services background)
-// When nothing is moving, the canvas is hidden and the plain <img> shows: idle cost is zero.
+// (The hover ripple around the pointer was removed at the client's request; the shader's uHover input
+// stays at 0.) When nothing is moving, the canvas is hidden and the plain <img> shows: idle cost is zero.
 //
-// Type. SVG turbulence + displacement filters liquefy headings (and the footer wordmark) for the length
-// of their reveal, then come off again. Filters never touch the 3D hero (they would flatten it).
+// Type. SVG noise + displacement filters liquefy headings (and the footer wordmark) for the length of
+// their reveal, then come off again.
 //
 // Everything runs on the shared gsap.ticker. Reduced motion: never initialised.
 import { env, $$ } from './env.js';
@@ -253,9 +253,17 @@ export async function initFluid() {
       const tex = texture(srcOf(it.img));
       const start = () => gsap.to(it, { reveal: 1, duration: 1.35, ease: 'power2.inOut', onComplete: () => { it.img.classList.remove('fl-hide'); it.hidden = false; } });
       if (tex?.tex) start();
-      else { // not decoded yet: give it a moment, otherwise show the plain image
+      else {
+        // Not on the GPU yet. Uploads normally wait for calm scrolling, so a reveal reached mid-scroll used to
+        // time out and pop in as a plain image — the flow rarely showed. A waiting reveal now jumps the queue
+        // (one ≤1280 px pre-decoded bitmap: a few ms), and it waits longer for the decode itself.
         let tries = 0;
-        const wait = () => { if (tex?.tex) start(); else if (++tries < 12) setTimeout(wait, 50); else { it.reveal = 1; it.img.classList.remove('fl-hide'); it.hidden = false; } };
+        const wait = () => {
+          if (!tex?.tex) { const k = uploads.findIndex((u) => u.entry === tex); if (k >= 0) uploadNow(uploads.splice(k, 1)[0]); }
+          if (tex?.tex) start();
+          else if (++tries < 30) setTimeout(wait, 50);
+          else { it.reveal = 1; it.img.classList.remove('fl-hide'); it.hidden = false; }
+        };
         wait();
       }
     });
@@ -268,16 +276,22 @@ export async function initFluid() {
     if (modes.reveal) host.removeAttribute('data-flow'); // the GL reveal replaces the CSS wave
     add(img, host, modes);
   });
-  reg('.tile', '.tile__img', { hover: true, bend: true });                         // work tiles: ripple + bend (the scrubbed wave clip stays)
-  reg('.hz__frame', 'img', { hover: true, bend: true });                           // studio strip
-  reg('.ps__frame', 'img', { reveal: true, hover: true, bend: true });              // project imagery
-  reg('.pj__cover', 'img', { hover: true, bend: true });
-  reg('.pj__next', '.pj__next-img', { hover: true, bend: true });                    // next-project panel
-  reg('.strip__item:not(.strip__item--video)', 'img', { reveal: true, hover: true, bend: true }); // about strip
-  reg('.tst__card:not(.tst__card--portrait) .tst__media', 'video', { reveal: true, hover: true }); // testimonial posters, off once playing; portrait samples are letterboxed and a cover-mapped GL copy would crop them
+  // No pointer-driven ripples: the client asked for the liquid effect around the cursor to go (Nov 2026).
+  // The flow lives in reveals, scroll bends and the services exchange.
+  reg('.tile', '.tile__img', { bend: true });                                       // selected work (the scrubbed wave clip stays)
+  reg('.st__frame', 'img', { reveal: true, bend: true });                           // homepage studio mosaic
+  reg('.wk__frame', 'img', { reveal: true, bend: true });                           // Work page grid
+  reg('.join__media', 'img', { reveal: true });                                     // careers
+  reg('.ps__frame', 'img', { reveal: true, bend: true });                           // project imagery
+  reg('.pj__cover', 'img', { bend: true });
+  reg('.pj__next', '.pj__next-img', { bend: true });                                // next-project panel
+  reg('.strip__item:not(.strip__item--video)', 'img', { reveal: true, bend: true }); // about strip
+  reg('.tst__card:not(.tst__card--portrait) .tst__media', 'video', { reveal: true }); // testimonial posters, off once playing; portrait samples are letterboxed and a cover-mapped GL copy would crop them
 
-  // services: the full-bleed preview exchanges images through the liquid front
-  const svcBg = document.querySelector('.svc__bg');
+  // services: the photographs crossfade in CSS, as on Bold & Beyond (client, Nov 2026), so the liquid
+  // exchange below is off. Set SVC_FLOW to bring it back.
+  const SVC_FLOW = false;
+  const svcBg = SVC_FLOW && document.querySelector('.svc__bg');
   if (svcBg) {
     const imgs = [...svcBg.querySelectorAll('.svc__img')];
     const last = imgs[imgs.length - 1];
@@ -350,7 +364,9 @@ export async function initFluid() {
     if (!uploads.length) return;
     calm = Math.abs(vel) < 0.03 ? calm + 1 : 0;
     if (calm < 3 && uploads.length < 6) return; // wait for a quiet moment unless a backlog builds
-    const u = uploads.shift();
+    uploadNow(uploads.shift());
+  };
+  function uploadNow(u) {
     u.entry.tex = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, u.entry.tex);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, u.src);
@@ -359,7 +375,7 @@ export async function initFluid() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     u.entry.w = u.w; u.entry.h = u.h;
     u.src.close?.();
-  };
+  }
 
   gsap.ticker.add(() => {
     const y = scrollY;

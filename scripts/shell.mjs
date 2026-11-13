@@ -10,8 +10,8 @@ const glyphRow = (cls = 'gl') =>
   WORDMARK_GLYPHS.map((g, i) => `<use href="#wg${i}" class="${cls} ${cls}-${i}" data-cx="${g.cx}"/>`).join('');
 
 // True-3D extruded wordmark for the hero. Every glyph is its own HTML stack of SVG layers on translateZ
-// (the loader's extrusion, given real depth), so each letter can move independently on the compositor
-// without repainting paths. Nesting: .g3 (scroll beat) > .g3__p (pointer) > .g3__in (idle motion).
+// (the loader's extrusion, given real depth). The layers are kept as built; since Nov 2026 the hero logo
+// is static (client: the hero logo stays exactly as it was, without movement; the D/T swap lives in the header).
 const W = 4260, H = 882, PAD = 24;
 export const wm3 = (layers = 8) =>
   `<span class="wm3" data-wm3 aria-hidden="true">${WORDMARK_GLYPHS.map((g, i) => {
@@ -22,17 +22,28 @@ export const wm3 = (layers = 8) =>
     return `<span class="g3" data-g="${i}" data-sx="${((DIFFERENT_SHIFT[i] / w) * 100).toFixed(3)}" style="left:${((x0 / W) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%"><span class="g3__s"><span class="g3__p"><span class="g3__in">${Array.from({ length: layers }, (_, k) => layer(layers - k)).join('')}<svg class="g3__face" viewBox="${box}" focusable="false" overflow="visible">${art}</svg><svg class="g3__light" viewBox="${box}" focusable="false" overflow="visible">${['bloom', 'tail', 'head'].map((k) => `<use class="lt lt--${k}" href="#wg${i}"${i === 0 ? ' clip-path="url(#wgc-t)"' : ''}/>`).join('')}</svg></span></span></span></span>`;
   }).join('')}</span>`;
 
-// Header mark: the flat wordmark, each glyph clipped by a few rectangular windows (columns across the
-// glyph). Static, the windows cover the glyph; logoreveal.js morphs them dot → bar → full for the reveal.
+// Header mark: the flat wordmark, the only animated logo on the site (client, Nov 2026). Two layers per
+// glyph, so the motions never fight:
+//   <g class="hs">   the DIFFERENT ⇄ TIFFEREND swap (logoswap.js writes its transform attribute). data-sx is
+//                    the glyph's offset in DIFFERENT, in wordmark units; data-cx/cy its centre.
+//   clip-path hc{i}  a few rectangular windows across the glyph; static they cover it, and logoreveal.js
+//                    morphs them dot → bar → full for the reveal.
+// The t and the i stem are one contour in the artwork: glyph 0 shows only the t (#wgc-t) and the i stem
+// travels with glyph 1 (#wgc-i), so the t can leave without taking the stem.
 export const hdrMark = () => {
   const clips = [], groups = [];
   WORDMARK_GLYPHS.forEach((g, i) => {
     const w = g.x1 - g.x0, n = Math.max(2, Math.round(w / 240)), cw = w / n;
     const rects = Array.from({ length: n }, (_, k) => `<rect x="${Math.round(g.x0 + k * cw - 2)}" y="-20" width="${Math.round(cw + 4)}" height="922" data-x="${Math.round(g.x0 + k * cw - 2)}" data-w="${Math.round(cw + 4)}" data-y0="${g.y0}" data-y1="${g.y1}"/>`).join('');
     clips.push(`<clipPath id="hc${i}" clipPathUnits="userSpaceOnUse">${rects}</clipPath>`);
-    groups.push(`<use href="#wg${i}" clip-path="url(#hc${i})"/>`);
+    const art = i === 0
+      ? '<g clip-path="url(#wgc-t)"><use href="#wg0" clip-path="url(#hc0)"/></g>'
+      : i === 1
+        ? '<g clip-path="url(#wgc-i)"><use href="#wg0" clip-path="url(#hc0)"/></g><use href="#wg1" clip-path="url(#hc1)"/>'
+        : `<use href="#wg${i}" clip-path="url(#hc${i})"/>`;
+    groups.push(`<g class="hs" data-sx="${DIFFERENT_SHIFT[i]}" data-cx="${Math.round((g.x0 + g.x1) / 2)}" data-cy="${Math.round((g.y0 + g.y1) / 2)}">${art}</g>`);
   });
-  return `<svg class="hdr__wm" viewBox="${WORDMARK_VIEWBOX}" aria-hidden="true" focusable="false"><defs>${clips.join('')}</defs>${groups.join('')}</svg>`;
+  return `<svg class="hdr__wm" viewBox="${WORDMARK_VIEWBOX}" aria-hidden="true" focusable="false" overflow="visible"><defs>${clips.join('')}</defs>${groups.join('')}</svg>`;
 };
 
 // Footer wordmark: each glyph wrapped in a group, so choreography layers (wrapper vs glyph) never collide.
