@@ -15,7 +15,12 @@ _Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT
   - Contrast: unchanged; only the known `.hdr__link` blend artefact.
   - No overflow at 390 or 1440.
 - **Before/after screenshots** in `review/` (git-ignored). "Before" is the live site.
-- **Not deployed**: the branch is unmerged.
+- **Deployed 13 Nov 2026**: `client-feedback-2026-11` was fast-forwarded into `main` (465d4e7) and the GitHub Pages run succeeded. Checked on the live URL:
+  - Hero logo: present (7 glyphs) and static over 6 s with the cursor moving.
+  - Header swap: animating (14 distinct frames).
+  - Services: no numbers, no rules, display face.
+  - Liquid cursor: no lenses.
+  - `tests/live.mjs`, desktop and mobile: right film per device, project deep link survives a refresh, styled 404, no failed requests. The one console error is the check's own visit to a missing page.
 
 ## Session 10: redesign below the hero (branch `redesign-2026-11`, read this first)
 
