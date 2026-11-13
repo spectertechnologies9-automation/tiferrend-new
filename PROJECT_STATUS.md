@@ -24,6 +24,8 @@ Tests (13 Nov 2026, build with `SITE_BASE=/tifferend/`):
 - `tests/contrast.mjs`: all text AA except `.hdr__link` reading 1.0, a measurement artefact of the header's `mix-blend-mode: difference` (unchanged; it renders black on white).
 - `tests/scrollperf.mjs`: p50 16.7 ms, p95 17.0 ms, 3 frames over 25 ms.
 
+Deployed 13 Nov 2026: `redesign-2026-11` fast-forwarded into `main` (8de680c, which also ships the session 9 hero), and the GitHub Pages run succeeded. `tests/live.mjs` on the live URL, desktop and mobile: right hero film per device (`shoot-1080` / `shoot-tall`), 7 hero glyphs moving, DM Mono loaded, project deep link survives a refresh, styled 404, no failed requests. The only console error is the check's own visit to a missing page. `sitemap.xml` returns 200.
+
 Missing assets (documented, not invented):
 - Licensed PP Editorial Old and Suisse BP International woff2 files (Lora/Inter fallbacks in use).
 - Team and studio photography beyond the one BTS shoot.
