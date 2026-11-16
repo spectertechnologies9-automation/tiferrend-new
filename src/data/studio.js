@@ -49,10 +49,15 @@ export const process = [
   },
 ];
 
-// Studio imagery. Only genuine Tifferend material. Add agency photography / team shots here as they arrive.
+// Studio imagery — CLIENT ASSET SLOT. Only genuine Tifferend material. Varied on purpose (client, Nov 2026:
+// the section felt empty because the pictures were too alike): a film from the studio, print, social and
+// a frame of finished film. The mosaic takes any number of items, cycling its composition, so team photos,
+// studio photography and behind-the-scenes clips from the client simply go here, best first:
+//   { type: 'image', src: 'media/studio/team-01-1280.webp', alt: '…what is in the picture…', caption: 'Short caption' }
+//   { type: 'video', src: 'media/studio/bts-02-720.mp4', poster: 'media/studio/bts-02.jpg', alt: '…', caption: '…' }
 export const studioMedia = [
   { type: 'video', src: 'media/video/bts-720.mp4', poster: 'media/video/bts-poster.jpg', alt: 'Behind the scenes of the My Mithila brand film: simulation, 3D modelling and compositing', caption: 'In the edit — the My Mithila film, from simulation to grade' },
-  { type: 'image', src: 'media/work/mm-bts-1080.jpg', alt: 'Shading the CGI cup in 3D software', caption: 'Look development' },
-  { type: 'image', src: 'media/work/mm-cup-1080.jpg', alt: 'Final frame: CGI cup composited into a drone shot of a green field', caption: 'Final composite' },
+  { type: 'image', src: 'media/work/mm-cards-1280.webp', alt: 'My Mithila business cards, the green and yellow identity in print', caption: 'Identity, in print' },
   { type: 'image', src: 'media/work/mm-pour-1080.jpg', alt: 'Close-up of chai pouring into the cup, from the finished film', caption: 'The pour, in the grade' },
+  { type: 'image', src: 'media/work/mm-post-05-1280.webp', alt: 'My Mithila social post for a bamboo sipper bottle', caption: 'Social content' },
 ];

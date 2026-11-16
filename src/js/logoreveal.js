@@ -1,6 +1,6 @@
 // Header logo reveal (after Mellow's mark, rebuilt for the Tifferend wordmark): each glyph shows
 // through a few rectangular windows. They start as scattered dots, stretch into vertical bars, then widen
-// until the glyph is whole; the reverse dissolves it. Plays when the page loads (after the loader, whose logo lands on the hero logo),
+// until the glyph is whole; the reverse dissolves it. Plays when the page loads (unless the loader's logo has just landed on it),
 // on hover / focus, and now and then when idle. The DIFFERENT ⇄ TIFFEREND swap
 // (logoswap.js) moves the glyph groups around these windows, so the two never interfere.
 // The link is usable throughout; without JS the windows already cover the glyphs.
@@ -43,8 +43,8 @@ export async function initLogoReveal({ handedOff = false } = {}) {
     });
   };
 
-  // the header logo is always visible (it carries the D/T swap; the hero's large logo is static), so it
-  // reveals once the page is ready (the loader's own logo lands on the hero logo)
+  // the header logo is always visible (it carries the D/T swap; the hero has no logo of its own); it
+  // reveals once the page is ready, unless the loader's logo has just landed on it
   if (!handedOff) reveal(true);
   logo.addEventListener('pointerenter', () => { if (!tl?.isActive()) dissolveAndReform(); });
   logo.addEventListener('focus', () => { if (!tl?.isActive()) dissolveAndReform(); });

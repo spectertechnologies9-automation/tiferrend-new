@@ -2,6 +2,41 @@
 
 _Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT ⇄ TIFFEREND swap). Build in `Desktop/tifferend final/`._
 
+## Session 12: final client requirements (branch `client-final-2026-11`, read this first)
+
+**What changed**
+- **Hero: video only.** The large logo, the DIFFERENT text and all logo animation in the hero are gone; the hero section, copy line, scroll cue and video control stay. The film comes from `src/data/hero.js` (client asset slot): desktop 16:9 and mobile 9:16, switched by orientation and re-picked on rotation. The loader logo now lands on the header logo.
+- **Header logo**: keeps the D/T swap (`logoswap.js`), unchanged.
+- **Services**: thin separators between every service are back, with equal rows and the white italic selection. `--svc-font` plus `?svcfont=text` let the client review an alternative font.
+- **Studio**: the mosaic now shows varied genuine work (the BTS film, stationery, a social post, a film frame) instead of near-identical cup frames. `studioMedia` is documented as the slot for the client's team, studio and BTS media.
+- **How we work**: a scroll-told sequence. The stage picture is sticky on desktop and crossfades as each numbered stage (01 / 03) comes into focus; each stage lists its outputs; on phones each stage carries its own picture.
+- **Work page (after Imagined)**:
+  - Default Canvas: a full-screen white canvas of 14 genuine pieces (6 covers + 8 confirmed My Mithila pieces) with seeded scatter placement that wraps endlessly. Drag with inertia, wheel, arrow keys; idle drift; a short intro settle.
+  - Filters recompose the canvas.
+  - Index view: one row per project; also the no-JS view.
+  - The toggle sits bottom-left and is remembered.
+- **Motion**: the WebGL fluid layer (`fluid.js`: liquid reveals, scroll bends, heading displacement) and the wavy clip edges are removed. Media now unveil behind a straight eased edge while the picture settles; tiles get a scrubbed zoom-settle.
+
+**Tests (17 Nov 2026)**
+- `npm test`: 199/199 in Chrome, Firefox and WebKit. Contracts updated: the loader hands off to the header logo, and the canvas is skipped by the off-screen layout check.
+- Hero guard: the only differences were the removed logo elements; every remaining hero element is unchanged. Baseline re-saved.
+- Scroll performance: p95 7.1 ms, 0 frames over 25 ms (was 17.0 ms p95 with WebGL).
+- Contrast: unchanged; only the known `.hdr__link` blend artefact.
+- Work page, at 1440 and 390:
+  - Canvas renders 14 pieces; dragging pans; filters recompose.
+  - Index rows match the filter; `?service` and `?view` sync; the view is remembered after a reload.
+  - A piece click opens its project.
+  - No errors, no overflow.
+
+**Still needed from the client (slots ready, nothing invented)**
+- The final hero films (16:9 + 9:16) → `src/data/hero.js`.
+- The original SVG logo → `src/data/wordmark.js`, then re-measure `DIFFERENT_SHIFT`.
+- Studio, team and BTS photos and clips → `studioMedia`.
+- The optional Services font → `--svc-font`.
+- Licensed PP Editorial Old and Suisse BP International files.
+- Real client testimonial films.
+- Not received in this session: the brief PDF, the WhatsApp screenshots and the Imagined recording. The Work page follows the live imagined.studio/tech instead.
+
 ## Session 11: client feedback (branch `client-feedback-2026-11`, read this first)
 
 - **Hero logo static.** A first pass misread the brief and removed the hero logo; that was reverted. The original hero is restored from `main`: markup, CSS, loader landing and the hero logo's size and position are identical. Only `hero3d.js` changed, and the hero logo no longer animates. Hero guard against the deployed original: the only difference was `hero3d`. Geometry and static screenshots are identical, and with animation on, every glyph layer stayed at `transform: none` over 6 s with the cursor moving across it. Baseline re-saved.

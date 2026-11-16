@@ -1,5 +1,5 @@
 // The original Tifferend preloader (rebuilt from the live site), first visit per session only.
-// On the homepage the extruded logo flies into the hero wordmark instead of fading out.
+// The extruded logo flies into the header logo (the only logo on the page) instead of fading out.
 // Never waits on network: it runs its own short timeline, can be skipped with any input,
 // and a CSS failsafe hides it after 6s even if this script never runs.
 import { $ } from './env.js';
@@ -26,14 +26,14 @@ export function runLoader() {
     const out = () => {
       clearTimeout(timer);
       removeSkip();
-      const target = $('[data-hero-mark]');
+      const target = $('[data-hdr-logo] .hdr__wm');
       const logo = $('[data-loader-logo]', el);
       if (!target || !logo) {
         el.classList.add('is-out');
         setTimeout(finish, 700);
         return;
       }
-      // Hand-off: move the loader logo onto the hero wordmark; the hero's 3D stack then grows out of it.
+      // Hand-off: move the loader logo onto the header logo, which takes over where it lands.
       el.classList.add('is-handoff'); // cancels the CSS entry animation before measuring
       const a = logo.getBoundingClientRect();
       const b = target.getBoundingClientRect();

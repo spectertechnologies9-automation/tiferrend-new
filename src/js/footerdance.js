@@ -5,7 +5,6 @@
 // Channels: choreography tweens xPercent / yPercent / rotation / scale; pointer springs use x / y /
 // skewX — separate transform components, so they never overwrite each other.
 import { $, $$ } from './env.js';
-import { liquid } from './fluid.js';
 
 export async function initFooterDance() {
   const mark = $('[data-ftr-mark]');
@@ -67,7 +66,7 @@ export async function initFooterDance() {
   let onScreen = false;
 
   // ---- signature: the first time the footer shows, the letters drop into place one by one
-  const signature = () => (liquid(svg, { scale: 110, duration: 2.4, delay: 0.2 }), gsap.from(wraps, { yPercent: -70, rotation: () => R(-14, 14), opacity: 0, duration: 1.1, ease: 'bounce.out', stagger: 0.09, delay: 0.25 }));
+  const signature = () => (gsap.from(wraps, { yPercent: -70, rotation: () => R(-14, 14), opacity: 0, duration: 1.1, ease: 'bounce.out', stagger: 0.09, delay: 0.25 }));
 
   // ---- pointer burst: springs with cascade (x/y in SVG user units, skewX)
   const s = glyphs.map(() => ({ x: 0, y: 0, k: 0, vx: 0, vy: 0, vk: 0 }));

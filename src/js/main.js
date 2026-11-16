@@ -47,9 +47,7 @@ async function boot() {
   if (ftr && !env.reduced) new IntersectionObserver(([e], o) => { if (!e.isIntersecting) return; o.disconnect(); import('./footerdance.js').then((d) => d.initFooterDance()).catch(() => {}); }, { rootMargin: '600px 0px' }).observe(ftr);
   magnets();
   // header logo: the fragment reveal (dot → bar → full) and the DIFFERENT ⇄ TIFFEREND swap, after the loader
-  if (!env.reduced) loading.then(() => Promise.all([import('./logoreveal.js'), import('./logoswap.js')]).then(([r, s]) => { r.initLogoReveal(); s.initLogoSwap(); })).catch(() => {});
-  // fluid layer: flowing reveals and scroll bends on real images and type (fluid.js)
-  if (!env.reduced && !new URLSearchParams(location.search).has('nofluid')) import('./fluid.js').then((m) => m.initFluid()).catch(() => {}); // ?nofluid: diagnostics
+  if (!env.reduced) loading.then((handedOff) => Promise.all([import('./logoreveal.js'), import('./logoswap.js')]).then(([r, s]) => { r.initLogoReveal({ handedOff }); s.initLogoSwap(); })).catch(() => {});
   if (env.finePointer && !env.reduced) import('./trail.js').then(({ initTrail }) => initTrail()).catch(() => {});
   const lenis = await smooth();
   toTop(lenis);

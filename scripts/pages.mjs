@@ -6,7 +6,8 @@ import { clients } from '../src/data/clients.js';
 import { testimonials, sampleTestimonials } from '../src/data/testimonials.js';
 import { story, philosophy, values, process, studioMedia } from '../src/data/studio.js';
 import { esc, img, lbl, arrow, largest } from './lib.mjs';
-import { wm3, clientRow } from './shell.mjs';
+import { clientRow } from './shell.mjs';
+import { heroFilm } from '../src/data/hero.js';
 
 export const projects = allProjects.filter((p) => site.showDraftProjects || !p.draft);
 const pad = (n) => String(n).padStart(2, '0');
@@ -33,23 +34,22 @@ const head = (label, title, { tag = 'h2', id = '', extra = '' } = {}) =>
 
 /* ---------------------------------------------------------------- HOME */
 
-// The hero: real behind-the-scenes footage of a commercial shoot (looped, shaded for the white type) with
-// the authentic wordmark as per-glyph 3D stacks, static (the D/T swap lives in the header logo, logoswap.js).
+// The hero: the film only (client, Nov 2026 — no large logo, no DIFFERENT text, no logo animation here;
+// the small header logo carries the D/T swap). Sources come from src/data/hero.js, the client asset slot.
 function hero() {
   return `<section class="hero dark" data-hero aria-labelledby="hero-title">
   <div class="hero__pin" data-hero-pin>
     <div class="hero__media" data-hero-media>
       <picture class="hero__poster">
-        <source media="(min-aspect-ratio: 1/1)" srcset="{{root}}media/video/shoot-poster-wide.jpg">
-        <img src="{{root}}media/video/shoot-poster-tall.jpg" alt="" fetchpriority="high" decoding="async">
+        <source media="(min-aspect-ratio: 1/1)" srcset="{{root}}${heroFilm.desktop.poster}">
+        <img src="{{root}}${heroFilm.mobile.poster}" alt="" fetchpriority="high" decoding="async">
       </picture>
-      <video class="hero__video" data-hero-video muted playsinline loop preload="none" aria-hidden="true" tabindex="-1"
-        data-src-tall="{{root}}media/video/shoot-tall.mp4" data-src-mid="{{root}}media/video/shoot-720.mp4" data-src-wide="{{root}}media/video/shoot-1080.mp4" data-src-uhd="{{root}}media/video/shoot-2160.mp4"></video>
+      <video class="hero__video" data-hero-video data-film="${heroFilm.status}" muted playsinline loop autoplay preload="none" aria-hidden="true" tabindex="-1"
+        data-src-tall="{{root}}${heroFilm.mobile.src}" data-src-wide="{{root}}${heroFilm.desktop.src}"${heroFilm.desktop.light ? ` data-src-mid="{{root}}${heroFilm.desktop.light}"` : ''}${heroFilm.desktop.uhd ? ` data-src-uhd="{{root}}${heroFilm.desktop.uhd}"` : ''}></video>
       <div class="hero__shade"></div>
     </div>
     <div class="hero__grain" aria-hidden="true"></div>
-    <span class="hero__spark" data-hero-spark aria-hidden="true"></span>
-    <h1 class="hero__title" id="hero-title"><span class="sr-only">Tifferend — creative branding studio</span><span class="hero__mark" data-hero-mark>${wm3()}</span></h1>
+    <h1 class="sr-only" id="hero-title">Tifferend — creative branding studio</h1>
     <div class="hero__foot" data-hero-foot>
       <div class="hero__copy">
         <p class="hero__type" aria-hidden="true"><span class="hero__roll" data-type data-words="Brand identity.|Packaging.|Brand films.|Websites.|Social.">Brand identity.</span></p>
@@ -149,20 +149,27 @@ function testimonialsBlock() {
 
 // About / studio (PDF: predominantly visual, real BTS). Desktop: pinned, scrolls sideways. Phones: swipe.
 function studioBlock() {
+  // the mosaic cycles a four-slot composition, so any number of client photos / clips can be added
   const media = studioMedia
     .map((m, i) =>
       m.type === 'video'
-        ? `<figure class="st__tile st__tile--${i}"><div class="st__frame"><video data-autoplay muted playsinline loop preload="none" poster="{{root}}${m.poster}" data-src="{{root}}${m.src}" aria-label="${esc(m.alt)}"></video><button class="vidctl" type="button" data-vidctl aria-label="Pause video" aria-pressed="false"><span class="vidctl__i" aria-hidden="true"></span></button></div><figcaption>${meta(m.caption)}</figcaption></figure>`
-        : `<figure class="st__tile st__tile--${i}"><div class="st__frame">${img(m.src.replace(/-(1080|1280)\.(jpg|webp)$/, ''), { alt: m.alt, sizes: '(min-width: 900px) 30vw, 50vw' })}</div><figcaption>${meta(m.caption)}</figcaption></figure>`
+        ? `<figure class="st__tile st__tile--${i % 4}"><div class="st__frame" data-flow><video data-autoplay muted playsinline loop preload="none" poster="{{root}}${m.poster}" data-src="{{root}}${m.src}" aria-label="${esc(m.alt)}"></video><button class="vidctl" type="button" data-vidctl aria-label="Pause video" aria-pressed="false"><span class="vidctl__i" aria-hidden="true"></span></button></div><figcaption>${meta(m.caption)}</figcaption></figure>`
+        : `<figure class="st__tile st__tile--${i % 4}"><div class="st__frame" data-flow>${img(m.src.replace(/-(1080|1280).(jpg|webp)$/, ''), { alt: m.alt, sizes: '(min-width: 900px) 30vw, 50vw' })}</div><figcaption>${meta(m.caption)}</figcaption></figure>`
     )
     .join('');
-  // stage headings come from each stage's own outputs ("Research, audience insight & positioning")
-  const join = (a) => (a.length > 1 ? `${a.slice(0, -1).join(', ')} & ${a[a.length - 1]}` : a[0] || '');
+  // How we work: a scroll-told sequence. On desktop the stage picture holds (sticky) and changes as each
+  // numbered stage comes into focus; on phones each stage carries its own picture. Copy is the studio's own.
+  const total = pad(process.length);
+  const pics = process
+    .map((st, i) => `<div class="st__pic${i === 0 ? ' is-active' : ''}" data-i="${i}">${img(st.media.src.replace(/-(1080|1280).(jpg|webp)$/, ''), { alt: '', sizes: '(min-width: 900px) 40vw, 100vw' })}</div>`)
+    .join('');
   const stages = process
-    .map((st, i) => `<li class="st__step">
-      <p class="st__step-n">${meta(`${pad(i + 1)} — ${st.title}`)}</p>
-      <h4 class="st__step-t">${esc(join(st.outputs).replace(/^./, (c) => c.toUpperCase()).replace(/ (\w)/g, (m) => m.toLowerCase()))}</h4>
+    .map((st, i) => `<li class="st__step${i === 0 ? ' is-active' : ''}" data-i="${i}">
+      <p class="st__step-n">${meta(`${pad(i + 1)} / ${total}`)}</p>
+      <h4 class="st__step-t">${esc(st.title)}<em>.</em></h4>
       <p class="st__step-p">${esc(st.text)}</p>
+      <ul class="st__step-out" aria-label="What this stage covers">${st.outputs.map((o) => `<li>${meta(o)}</li>`).join('')}</ul>
+      <figure class="st__step-pic" data-flow>${img(st.media.src.replace(/-(1080|1280).(jpg|webp)$/, ''), { alt: st.media.alt, sizes: '100vw' })}</figure>
     </li>`)
     .join('');
   return `<section class="st" id="studio" aria-labelledby="st-title">
@@ -175,9 +182,12 @@ function studioBlock() {
     <p class="statement st__quote" data-lightup><span class="q q--open" aria-hidden="true">“</span>${collage(philosophy.paragraphs[1])}<span class="q q--close" aria-hidden="true">”</span></p>
   </div>
   <div class="st__mosaic wrap">${media}</div>
-  <div class="st__proc wrap" id="process">
-    <header class="st__proc-head">${lbl('Process')}<h3 class="h-lg">${emph('How we *work*.')}</h3></header>
-    <ol class="st__steps">${stages}</ol>
+  <div class="st__proc wrap" id="process" data-process>
+    <header class="st__proc-head">${lbl('How we work')}<h3 class="h-xl" data-split>${emph('Three stages, one *brand*.')}</h3></header>
+    <div class="st__proc-body">
+      <div class="st__pics" aria-hidden="true" data-flow>${pics}</div>
+      <ol class="st__steps">${stages}</ol>
+    </div>
   </div>
 </section>`;
 }
@@ -201,7 +211,7 @@ function careersBlock() {
       <p class="body-l">Content, film, design and strategy roles open now.</p>
       <a class="btn btn--ember" href="${site.careersUrl}" target="_blank" rel="noopener">See roles &amp; apply ${arrow}</a>
     </div>
-    <figure class="join__media"><img src="{{root}}media/video/studio-poster-wide.jpg" alt="An empty studio chair under a single ember lamp" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+    <figure class="join__media" data-flow><img src="{{root}}media/video/studio-poster-wide.jpg" alt="An empty studio chair under a single ember lamp" width="1920" height="1080" loading="lazy" decoding="async"></figure>
   </div>
 </section>`;
 }
@@ -224,30 +234,80 @@ export function home() {
 
 /* ---------------------------------------------------------------- WORK */
 
+// Work, after Imagined (imagined.studio/tech): by default a full-screen white canvas of the portfolio —
+// every project's cover plus confirmed pieces of My Mithila, scattered at varied sizes, wrapping endlessly,
+// explored by dragging, scrolling or the arrow keys (work.js builds it from the <template> below). A toggle
+// switches to Index, a simplified list. Service filters drive both views. Without JS the Index is shown,
+// so the page stays crawlable and usable. Only real projects and real images; drafts are marked.
+// Extra canvas pieces from confirmed work: [image base, discipline, service slug for the filters].
+const CANVAS_PIECES = {
+  'my-mithila': [
+    ['media/work/mm-cards', 'Identity', 'branding'],
+    ['media/work/mm-tote', 'Packaging', 'packaging'],
+    ['media/work/mm-storefront', 'Digital', 'digital'],
+    ['media/work/mm-post-03', 'Social', 'social'],
+    ['media/work/mm-billboard', 'Campaign', 'branding'],
+    ['media/work/mm-bamboo', 'Packaging', 'packaging'],
+    ['media/work/mm-post-07', 'Social', 'social'],
+    ['media/work/mm-post-10', 'Social', 'social'],
+  ],
+};
+function galleryAlt(p, base) {
+  let alt = '';
+  const walk = (o) => { if (alt || !o || typeof o !== 'object') return; if (Array.isArray(o)) return o.forEach(walk); if (o.src === base && o.alt) { alt = o.alt; return; } Object.values(o).forEach(walk); };
+  walk(p.sections);
+  return alt;
+}
 export function work() {
   const filters = [`<button class="chip is-active" type="button" data-filter="all" aria-pressed="true">All <sup>${projects.length}</sup></button>`]
     .concat(services.map((s) => `<button class="chip" type="button" data-filter="${s.slug}" aria-pressed="false">${esc(s.name)} <sup>${countFor(s.slug)}</sup></button>`))
     .join('');
+  // Index: the simplified list (and the no-JS view). One row per project.
   const items = projects
     .map(
-      (p, i) => `<li class="wk__item" data-services="${p.services.join(' ')}" style="--slot:${i % 6}">
-    <a class="wk__link" href="{{root}}work/${p.slug}/" data-cursor-label="View">
-      <span class="wk__frame">${img(p.cover, { alt: p.coverAlt, sizes: '(min-width: 900px) 34vw, (min-width: 600px) 50vw, 100vw', cls: 'wk__img', eager: i === 0, style: `object-position:${p.tile?.focus || '50% 50%'}` })}</span>
-      <span class="wk__cap"><span class="wk__client">${esc(p.client)}</span><span class="wk__meta">${esc(svcNames(p))}</span><span class="wk__meta">${p.year}${p.draft ? ' · Draft' : ''}</span></span>
+      (p, i) => `<li class="wk__item" data-services="${p.services.join(' ')}">
+    <a class="wk__link" href="{{root}}work/${p.slug}/">
+      <span class="wk__thumb">${img(p.cover, { alt: p.coverAlt, sizes: '(min-width: 900px) 160px, 96px', cls: 'wk__img', eager: i === 0, style: `object-position:${p.tile?.focus || '50% 50%'}` })}</span>
+      <span class="wk__client">${esc(p.client)}</span>
+      <span class="wk__meta">${esc(svcNames(p))}</span>
+      <span class="wk__meta wk__year">${p.year}${p.draft ? ' · Draft' : ''}</span>
+      <span class="wk__go" aria-hidden="true">${arrow}</span>
     </a>
   </li>`
     )
     .join('');
+  // Canvas pieces: each project's cover, then confirmed extra pieces. Labels: client / discipline / year.
+  const piece = (p, base, alt, discipline, svcs) => `<a class="wc__item" href="{{root}}work/${p.slug}/" data-services="${svcs}" aria-label="${esc(`${p.client} — ${discipline}, ${p.year}${p.draft ? ' (draft)' : ''}`)}">
+      <span class="wc__frame">${img(base, { alt, sizes: '(min-width: 900px) 26vw, 56vw', cls: 'wc__img' })}</span>
+      <span class="wc__cap"><span class="wc__client">${esc(p.client)}</span><span class="meta">${esc(discipline)}</span><span class="meta">${p.year}${p.draft ? ' · Draft' : ''}</span></span>
+    </a>`;
+  const pieces = projects
+    .flatMap((p) => [
+      piece(p, p.cover, p.coverAlt, p.category, p.services.join(' ')),
+      ...(CANVAS_PIECES[p.slug] || []).map(([base, d, svc]) => piece(p, base, galleryAlt(p, base) || `${p.client}, ${d.toLowerCase()}`, d, svc)),
+    ])
+    .join('');
   return `<section class="wk" data-work>
-  <div class="wk__head wrap">
+  <div class="wk__top wrap">
     ${lbl('Work')}
     <h1 class="h-xxl wk__title" data-split>Every project, by <em>domain</em>.</h1>
     <p class="body-l wk__lede">Identity, packaging, film and digital, for brands that want to be remembered. Filter by what you need.</p>
   </div>
   <div class="wk__filters wrap" role="group" aria-label="Filter work by service">${filters}</div>
   <p class="sr-only" aria-live="polite" data-work-status></p>
-  <ul class="wk__grid wrap" data-work-grid>${items}</ul>
-  <div class="wk__empty wrap" data-work-empty hidden><p class="body-l">No published projects in this domain yet.</p><a class="link-arrow" href="{{root}}contact/">Talk to us about it ${arrow}</a></div>
+  <div class="wc" data-wc hidden>
+    <div class="wc__world" data-wc-world></div>
+    <p class="wc__hint" aria-hidden="true"><span class="wc__hint-fine">Drag or scroll to explore</span><span class="wc__hint-touch">Drag to explore</span></p>
+  </div>
+  <template data-wc-items>${pieces}</template>
+  <div class="wk__index" data-wk-index>
+    <ul class="wk__list wrap" data-work-grid>${items}</ul>
+    <div class="wk__empty wrap" data-work-empty hidden><p class="body-l">No published projects in this domain yet.</p><a class="link-arrow" href="{{root}}contact/">Talk to us about it ${arrow}</a></div>
+  </div>
+  <div class="wk__views" role="group" aria-label="Choose a view" data-wk-views hidden>
+    <button class="wk__view is-active" type="button" data-view="canvas" aria-pressed="true">Canvas</button>
+    <button class="wk__view" type="button" data-view="index" aria-pressed="false">Index</button>
+  </div>
 </section>`;
 }
 

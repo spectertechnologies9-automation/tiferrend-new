@@ -75,7 +75,7 @@ async function walk(page, h) {
 
 const layoutCheck = () => {
   const W = document.documentElement.clientWidth;
-  const skip = '.marq, .tst__list, .strip__track, .hz__track, .wk__filters, dialog, .loader, .hdr, .cursor, .skip, [aria-hidden="true"], .sr-only';
+  const skip = '.wc, .marq, .tst__list, .strip__track, .hz__track, .wk__filters, dialog, .loader, .hdr, .cursor, .skip, [aria-hidden="true"], .sr-only';
   // An element only counts if no ancestor clips it (overflow hidden/clip) within the viewport.
   // Clipped if any ancestor that clips overflow lies inside the viewport (e.g. a pinned stage).
   const clipped = (el) => {
@@ -136,9 +136,9 @@ for (const engine of engines) {
     const shown = await page.evaluate(() => getComputedStyle(document.querySelector('[data-loader]')).display !== 'none');
     await page.waitForTimeout(3600);
     const gone = await page.evaluate(() => !document.querySelector('[data-loader]') && !document.documentElement.classList.contains('show-loader'));
-    const mark = await page.evaluate(() => getComputedStyle(document.querySelector('[data-hero-mark]')).opacity);
+    const mark = await page.evaluate(() => (document.querySelector('[data-hero] .wm3, [data-hero] .g3, [data-hero-mark]') ? 'hero has a logo' : getComputedStyle(document.querySelector('.hdr__logo')).opacity)); // hero = film only; the loader hands off to the header logo (client, Nov 2026)
     const vid = await page.evaluate(() => { const v = document.querySelector('[data-hero-video]'); return { src: v.currentSrc.split('/').pop(), paused: v.paused, t: v.currentTime }; });
-    ok(`[${engine} ${w}] loader shows on first visit, hands off within 3.6s`, shown && gone && parseFloat(mark) > 0.95, JSON.stringify({ shown, gone, mark }));
+    ok(`[${engine} ${w}] loader shows on first visit, hands off to the header logo within 3.6s`, shown && gone && parseFloat(mark) > 0.95, JSON.stringify({ shown, gone, mark }));
     ok(`[${engine} ${w}] hero film plays (right source)`, !vid.paused && vid.t > 0 && (w < 768 ? /shoot-tall/.test(vid.src) : /shoot-(720|1080|2160)/.test(vid.src)), JSON.stringify(vid));
     await page.reload();
     const skipped = await page.evaluate(() => !document.documentElement.classList.contains('show-loader'));

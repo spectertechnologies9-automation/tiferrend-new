@@ -1,19 +1,26 @@
-// Homepage: hero film + 3D wordmark, statement light-up, tile reveals, services, pinned studio strip,
-// process progress, testimonial players.
+// Homepage: hero film (video only), services, studio, process, tile reveals, testimonial players.
 import { env, $, $$ } from './env.js';
 import { sound } from './ui.js';
 import { testimonials } from './testimonials.js';
 import { heroMotion } from './hero3d.js';
 
 /* ---------------------------------------------------------------- hero film: right source per screen, never blocks */
+// Sources come from src/data/hero.js (the client's 16:9 desktop and 9:16 mobile films): landscape screens
+// get the desktop film (its optional 4K / light encodes where they help), portrait screens the mobile film.
 function heroVideo() {
   const v = $('[data-hero-video]');
   if (!v || env.reduced) return; // the poster <picture> stays
-  const wide = matchMedia('(min-aspect-ratio: 1/1)').matches;
-  const px = innerWidth * devicePixelRatio; // device pixels across: 4K only where the screen can show it
-  v.src = !wide ? v.dataset.srcTall : px > 2600 && v.dataset.srcUhd ? v.dataset.srcUhd : px > 1400 ? v.dataset.srcWide : v.dataset.srcMid;
+  const landscape = matchMedia('(min-aspect-ratio: 1/1)');
+  const pick = () => {
+    const px = innerWidth * devicePixelRatio; // device pixels across: 4K only where the screen can show it
+    const d = v.dataset;
+    return !landscape.matches ? d.srcTall : px > 2600 && d.srcUhd ? d.srcUhd : px <= 1400 && d.srcMid ? d.srcMid : d.srcWide;
+  };
+  v.src = pick();
   v.preload = 'auto';
   const play = () => v.play().catch(() => {});
+  // a rotated phone or resized window switches between the 9:16 and 16:9 films
+  landscape.addEventListener('change', () => { const next = pick(); if (!v.currentSrc.endsWith(next.replace(/^.*\//, ''))) { v.src = next; if (v.dataset.userPaused !== '1') play(); } });
   v.addEventListener('canplay', play, { once: true });
   v.addEventListener('playing', () => v.classList.add('is-playing'), { once: true });
   v.addEventListener('error', () => v.removeAttribute('src'), { once: true });
@@ -53,8 +60,11 @@ function servicesBlock() {
   const imgs = $$('.svc__img', root);
   let pointer = 'mouse';
   root.addEventListener('pointerdown', (e) => { pointer = e.pointerType; }, { passive: true });
+  // client font review: ?svcfont=text sets the service names in the text face (see --svc-font in main.css)
+  const font = new URLSearchParams(location.search).get('svcfont');
+  if (font) document.documentElement.dataset.svcFont = font;
   // Bold & Beyond: the picture always fills the section. Hover, keyboard focus or a tap selects a service:
-  // its picture flows in, its name turns italic white and its line + link open. The last selection stays.
+  // its picture crossfades in, its name turns italic white and its line + link open. The last one stays.
   let active = 0, tapped = -1;
   const set = (i) => {
     if (i === active) return;
@@ -91,6 +101,21 @@ function marquee() {
   m.addEventListener('focusout', () => m.classList.remove('is-paused'));
 }
 
+/* ---------------------------------------------------------------- how we work: the stage in focus */
+// The stage crossing the middle of the screen becomes active: full strength, and (desktop) its picture
+// crossfades in the sticky frame. An observer on a thin centre band works with Lenis and native scroll.
+function processStory() {
+  const root = $('[data-process]');
+  if (!root) return;
+  const steps = $$('.st__step', root), pics = $$('.st__pic', root);
+  const show = (i) => {
+    steps.forEach((s, k) => s.classList.toggle('is-active', k === i));
+    pics.forEach((p, k) => p.classList.toggle('is-active', k === i));
+  };
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) show(+e.target.dataset.i); }), { rootMargin: '-48% 0px -48% 0px' });
+  steps.forEach((s) => io.observe(s));
+}
+
 /* ---------------------------------------------------------------- scroll choreography (GSAP + ScrollTrigger) */
 async function scrollScenes() {
   if (env.reduced) return;
@@ -114,20 +139,17 @@ async function scrollScenes() {
     });
   });
 
-  // Flow edge: a 13-point top edge, wavy at `base` (percent from the top), flat at 0. Same point count
-  // at both ends so GSAP can interpolate the polygon.
-  const wave = (base, amp = 7, phase = 0) => `polygon(${Array.from({ length: 13 }, (_, i) => {
-    const x = (i / 12) * 100;
-    return `${x.toFixed(2)}% ${base ? Math.max(0, base + amp * Math.sin((x / 100) * Math.PI * 2.4 + phase)).toFixed(2) : 0}%`;
-  }).join(', ')}, 100% 100%, 0% 100%)`;
-
   const mm = gsap.matchMedia();
   mm.add('(min-width: 900px)', () => {
-    // Selected work: each tile unmasks from the bottom while its image drifts against the scroll.
+    // Selected work: each tile opens upward behind a straight edge while its picture settles from a slight
+    // zoom and drifts against the scroll — a calm flow, no wavy edge (client, Nov 2026).
     $$('.tile').forEach((t, i) => {
-      gsap.fromTo(t, { clipPath: wave(24, 8, i) }, {
-        clipPath: wave(0), ease: 'power2.out',
-        scrollTrigger: { trigger: t, start: 'top 95%', end: 'top 45%', scrub: 0.8 },
+      gsap.fromTo(t, { clipPath: 'inset(22% 0% 0% 0%)' }, {
+        clipPath: 'inset(0% 0% 0% 0%)', ease: 'power2.out',
+        scrollTrigger: { trigger: t, start: 'top 96%', end: 'top 50%', scrub: 0.8 },
+      });
+      gsap.fromTo($('.tile__img', t), { scale: 1.14 }, {
+        scale: 1, ease: 'power2.out', scrollTrigger: { trigger: t, start: 'top 96%', end: 'top 40%', scrub: 0.8 },
       });
       gsap.fromTo($('.tile__img', t), { yPercent: -5 }, {
         yPercent: 5, ease: 'none', scrollTrigger: { trigger: t, start: 'top bottom', end: 'bottom top', scrub: true },
@@ -142,6 +164,7 @@ export async function init({ lenis, loading }) {
   heroVideo();
   typer();
   servicesBlock();
+  processStory();
   marquee();
   testimonials();
   await loading;

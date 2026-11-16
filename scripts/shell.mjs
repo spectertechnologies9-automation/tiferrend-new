@@ -9,19 +9,6 @@ import { esc, lbl, arrow } from './lib.mjs';
 const glyphRow = (cls = 'gl') =>
   WORDMARK_GLYPHS.map((g, i) => `<use href="#wg${i}" class="${cls} ${cls}-${i}" data-cx="${g.cx}"/>`).join('');
 
-// True-3D extruded wordmark for the hero. Every glyph is its own HTML stack of SVG layers on translateZ
-// (the loader's extrusion, given real depth). The layers are kept as built; since Nov 2026 the hero logo
-// is static (client: the hero logo stays exactly as it was, without movement; the D/T swap lives in the header).
-const W = 4260, H = 882, PAD = 24;
-export const wm3 = (layers = 8) =>
-  `<span class="wm3" data-wm3 aria-hidden="true">${WORDMARK_GLYPHS.map((g, i) => {
-    const x0 = g.x0 - PAD, w = g.x1 - g.x0 + PAD * 2;
-    const box = `${x0} -${PAD} ${w} ${H + PAD * 2}`;
-    const art = i === 0 ? '<use href="#wg0" clip-path="url(#wgc-t)"/>' : i === 1 ? '<use href="#wg0" clip-path="url(#wgc-i)"/><use href="#wg1"/>' : `<use href="#wg${i}"/>`;
-    const layer = (k) => `<svg class="g3__layer" style="--k:${k}" viewBox="${box}" focusable="false" overflow="visible">${art}</svg>`;
-    return `<span class="g3" data-g="${i}" data-sx="${((DIFFERENT_SHIFT[i] / w) * 100).toFixed(3)}" style="left:${((x0 / W) * 100).toFixed(3)}%;width:${((w / W) * 100).toFixed(3)}%"><span class="g3__s"><span class="g3__p"><span class="g3__in">${Array.from({ length: layers }, (_, k) => layer(layers - k)).join('')}<svg class="g3__face" viewBox="${box}" focusable="false" overflow="visible">${art}</svg><svg class="g3__light" viewBox="${box}" focusable="false" overflow="visible">${['bloom', 'tail', 'head'].map((k) => `<use class="lt lt--${k}" href="#wg${i}"${i === 0 ? ' clip-path="url(#wgc-t)"' : ''}/>`).join('')}</svg></span></span></span></span>`;
-  }).join('')}</span>`;
-
 // Header mark: the flat wordmark, the only animated logo on the site (client, Nov 2026). Two layers per
 // glyph, so the motions never fight:
 //   <g class="hs">   the DIFFERENT ⇄ TIFFEREND swap (logoswap.js writes its transform attribute). data-sx is
