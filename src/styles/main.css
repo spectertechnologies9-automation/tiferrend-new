@@ -401,15 +401,13 @@ a:hover > .ico-arrow, button:hover > .ico-arrow { transform: translate(3px, -3px
 }
 /* ------------------------------------------------------------------ services (Bold & Beyond) */
 /* Bold & Beyond, as the client asked ("exactly like this"): one photograph covers the whole section; a
-   small label on the left; the services on the right, one per row: equal row heights, one left edge and a
-   thin rule between every service (client, Nov 2026: the separators are essential). Type and accents are
-   the site's own: names in --svc-font (the display face; selected: white italic, the rest faded back),
-   label and link in ember DM Mono, the line in the text face. No numbers. For the client's font review,
-   ?svcfont=text sets the names in the text face, and a supplied font can be dropped into --svc-font.
+   small label on the left; the service names stacked tightly on the right. Type and accents are the site's
+   own: names in the display face (selected: white italic, the rest faded back), label and link in ember
+   DM Mono, the line in the text face. No numbers, no rules.
    Selecting a service crossfades the photograph (a slow settle from a slight zoom); its line and a link to
    the filtered Work page sit quietly under the list. Scoped to .svc; the rest of the page stays white. */
-.svc { --svc-font: var(--f-display); --svc-rule: rgba(255, 255, 255, 0.3); position: relative; display: flex; align-items: center; min-height: max(100svh, 680px); padding-block: clamp(96px, 10vw, 160px); overflow: hidden; isolation: isolate; color: #fff; background: #0b0b0b; }
-.svc__inner { position: relative; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: center; width: 100%; }
+.svc { position: relative; display: flex; align-items: center; min-height: max(100svh, 680px); padding-block: clamp(96px, 10vw, 160px); overflow: hidden; isolation: isolate; color: #fff; background: #0b0b0b; }
+.svc__inner { position: relative; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: center; width: 100%; }
 .svc__label { grid-column: 1; grid-row: 1; margin: 0; font: 500 11.5px/1.3 var(--f-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); } /* the site's label */
 .svc__hint { display: none; }
 /* background */
@@ -419,17 +417,15 @@ a:hover > .ico-arrow, button:hover > .ico-arrow { transform: translate(3px, -3px
 .svc__dim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.18) 40%, rgba(0, 0, 0, 0.6) 78%); } /* deeper behind the list: some photographs are bright */
 /* the list */
 .svc__list { position: relative; grid-column: 2; grid-row: 1; text-shadow: 0 1px 22px rgba(0, 0, 0, 0.35); }
-.svc__item + .svc__item { border-top: 1px solid var(--svc-rule); }
-.svc__link { display: flex; align-items: center; height: clamp(60px, 5.3vw, 80px); }
-.svc__name { display: inline-block; font: 400 clamp(1.6rem, 2.5vw, 2.45rem)/1.15 var(--svc-font); letter-spacing: -0.014em; color: rgba(255, 255, 255, 0.5); transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.svc__link { display: block; padding: 1px 0; }
+.svc__name { display: inline-block; font: 400 clamp(1.7rem, 2.7vw, 2.6rem)/1.18 var(--f-display); letter-spacing: -0.014em; color: rgba(255, 255, 255, 0.5); transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 .svc__link:hover .svc__name { color: rgba(255, 255, 255, 0.72); }
 .svc__item.is-active .svc__name { color: #fff; font-style: italic; } /* the site's editorial emphasis */
-.svc__meta { position: absolute; left: 0; right: 0; top: calc(100% + 28px); display: grid; gap: 10px; justify-items: start; opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity 0.45s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.svc__meta { position: absolute; left: 0; right: 0; top: calc(100% + 26px); display: grid; gap: 10px; justify-items: start; opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity 0.45s, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
 .svc__item.is-active .svc__meta { opacity: 1; transform: none; pointer-events: auto; }
 .svc__line { max-width: 32ch; font-size: 16px; line-height: 1.45; color: rgba(255, 255, 255, 0.8); }
 .svc__go { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: 500 11.5px/1 var(--f-meta); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); }
 .svc__go:hover { color: #fff; }
-html[data-svc-font="text"] .svc { --svc-font: var(--f-text); } /* client font review: ?svcfont=text */
 .svc__link:focus-visible, .svc__go:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
 @media (max-width: 899px) {
   .svc { min-height: 0; }
@@ -437,7 +433,7 @@ html[data-svc-font="text"] .svc { --svc-font: var(--f-text); } /* client font re
   .svc__inner { grid-template-columns: minmax(0, 1fr); }
   .svc__label { margin-bottom: 28px; }
   .svc__list { grid-column: 1; grid-row: 2; margin-bottom: 150px; }
-  .svc__link { height: 58px; }
+  .svc__link { padding: 6px 0; }
   .svc__hint { display: block; grid-row: 3; margin: 0; font-size: 13.5px; color: rgba(255, 255, 255, 0.72); }
 }
 /* ------------------------------------------------------------------ clients (Mensch) */

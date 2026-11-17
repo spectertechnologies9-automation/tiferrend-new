@@ -60,9 +60,6 @@ function servicesBlock() {
   const imgs = $$('.svc__img', root);
   let pointer = 'mouse';
   root.addEventListener('pointerdown', (e) => { pointer = e.pointerType; }, { passive: true });
-  // client font review: ?svcfont=text sets the service names in the text face (see --svc-font in main.css)
-  const font = new URLSearchParams(location.search).get('svcfont');
-  if (font) document.documentElement.dataset.svcFont = font;
   // Bold & Beyond: the picture always fills the section. Hover, keyboard focus or a tap selects a service:
   // its picture crossfades in, its name turns italic white and its line + link open. The last one stays.
   let active = 0, tapped = -1;
