@@ -1,6 +1,6 @@
 // Live-site check (GitHub Pages): pages load without console/network errors, assets and fonts load,
 // navigation and a project link work, a nested route survives a hard refresh, the 404 page is styled,
-// and the hero's animated layers are running. node tests/live.mjs [baseUrl] [outPrefix]
+// the hero is film-only and the header logo swap runs. node tests/live.mjs [baseUrl] [outPrefix]
 import { chromium } from 'playwright';
 const [base = 'https://spectertechnologies9-automation.github.io/tiferrend-new/', out = 'live'] = process.argv.slice(2);
 const b = await chromium.launch({ channel: 'chrome' });
@@ -18,9 +18,9 @@ for (const [label, vp, mobile] of [['desktop', { width: 1440, height: 900 }, fal
     title: document.title,
     css: [...document.styleSheets].some((s) => { try { return s.cssRules.length > 50; } catch { return false; } }),
     fontsLoaded: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family).filter((v, i, a) => a.indexOf(v) === i),
-    heroGlyphs: document.querySelectorAll('.g3').length,
+    heroLogo: document.querySelectorAll('[data-hero] svg, .wm3, .g3').length, // video-only hero: must be 0
     film: (document.querySelector('[data-hero-video]')?.currentSrc || '').split('/').pop(),
-    heroMoving: getComputedStyle(document.querySelector('.g3__in')).transform !== 'none',
+    hdrSwap: [...document.querySelectorAll('[data-hdr-logo] .hs')].some((g) => (g.getAttribute('transform') || '').length > 0),
     images: [...document.images].filter((i) => i.complete && i.naturalWidth > 0).length,
   }));
   await p.screenshot({ path: `${out}-${label}-home.png` });
@@ -28,7 +28,17 @@ for (const [label, vp, mobile] of [['desktop', { width: 1440, height: 900 }, fal
   await p.goto(new URL('work/', base).href, { waitUntil: 'load' });
   await p.waitForTimeout(1200);
   r.workTiles = await p.locator('.wk__item').count();
-  await p.locator('a[href*="my-mithila"]').first().click();
+  r.canvasPieces = await p.locator('.wc__world .wc__item').count();
+  // the Canvas drifts, so click an on-screen My Mithila piece where it is now
+  const pt = await p.evaluate(() => {
+    for (const a of document.querySelectorAll('.wc__world a[href*="my-mithila"]')) {
+      const r = a.getBoundingClientRect();
+      if (r.left > 60 && r.top > 140 && r.right < innerWidth - 60 && r.bottom < innerHeight - 90) return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+    return null;
+  });
+  if (pt) await p.mouse.click(pt.x, pt.y); else await p.goto(new URL('work/my-mithila/', base).href);
+  r.clickedCanvas = !!pt;
   await p.waitForLoadState('load');
   await p.waitForTimeout(1200);
   r.projectUrl = p.url().replace(base, '/');

@@ -28,6 +28,11 @@ _Last updated: 13 Nov 2026 (session 9: production-footage hero and the DIFFERENT
   - A piece click opens its project.
   - No errors, no overflow.
 
+**Deployed (17 Nov 2026)**
+- Merged into `main` (fast-forward, 6cf0a31); the GitHub Pages workflow succeeded.
+- `node tests/live.mjs` on the live site, desktop and mobile: no hero logo; the desktop film is shoot-1080.mp4 and the mobile film shoot-tall.mp4; the header swap runs; 14 Canvas pieces and 6 Index rows; a Canvas piece click opens its project (desktop: Ember & Oak; mobile: My Mithila); a nested route survives a hard refresh; the styled 404 returns status 404. No failed requests. The only console error is the 404 from the test's own missing-page visit.
+- `tests/live.mjs` was updated for the video-only hero (asserts no hero logo plus the header swap) and for the drifting Canvas (it clicks an on-screen piece).
+
 **Still needed from the client (slots ready, nothing invented)**
 - The final hero films (16:9 + 9:16) → `src/data/hero.js`.
 - The original SVG logo → `src/data/wordmark.js`, then re-measure `DIFFERENT_SHIFT`.
